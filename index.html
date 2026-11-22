@@ -24,6 +24,7 @@
     :root {
       --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       --fluid: cubic-bezier(0.16, 1, 0.3, 1);
+      --hero-glow: rgba(34, 211, 238, 0.25);
     }
 
     body {
@@ -77,11 +78,19 @@
 
     /* Glassmorphism Cards */
     .glass-panel {
-      background: rgba(13, 19, 36, 0.72);
+      background: rgba(13, 19, 36, 0.74);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border: 1px solid rgba(148, 163, 184, 0.16);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: box-shadow 0.45s var(--fluid), border-color 0.45s var(--fluid), transform 0.25s var(--fluid);
+    }
+
+    /* Dynamic Element Aura Card */
+    .hero-element-card {
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.6), 0 0 38px var(--hero-glow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .zone-active {
@@ -92,43 +101,87 @@
 
     /* Tactile Spring Buttons & Tiles */
     .spring-tile {
-      transition: transform 0.24s var(--spring), box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.26s var(--spring), box-shadow 0.22s ease, background-color 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
       box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5), 0 6px 14px rgba(0, 0, 0, 0.35);
     }
     .spring-tile:hover:not(:disabled) {
-      transform: translateY(-3px) scale(1.05);
+      transform: translateY(-3px) scale(1.06);
+      filter: brightness(1.12);
     }
     .spring-tile:active:not(:disabled) {
-      transform: translateY(2px) scale(0.95);
+      transform: translateY(2px) scale(0.94);
       box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
     }
 
     .spring-pill {
-      transition: transform 0.22s var(--spring), background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.24s var(--spring), background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
     }
     .spring-pill:hover {
-      transform: translateY(-2px) scale(1.06);
+      transform: translateY(-2px) scale(1.07);
     }
     .spring-pill:active {
-      transform: scale(0.93);
+      transform: scale(0.92);
+    }
+
+    /* Shimmering Orbital Energy Bar */
+    .energy-bar-fill {
+      position: relative;
+      overflow: hidden;
+      transition: width 0.45s var(--spring), background 0.3s ease;
+    }
+    .energy-bar-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.45) 50%, transparent 100%);
+      animation: energyShimmer 1.8s infinite linear;
+    }
+    @keyframes energyShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Flying Electron Photon Particle */
+    .flying-photon {
+      position: fixed;
+      pointer-events: none;
+      z-index: 80;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 12px;
+      color: #ecfeff;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.95) 0%, rgba(99, 102, 241, 0.85) 100%);
+      box-shadow: 0 0 18px #22d3ee, 0 0 32px #818cf8;
+      transform: translate(-50%, -50%) scale(1);
+      transition: left 0.46s var(--fluid), top 0.46s var(--fluid), transform 0.46s var(--fluid), opacity 0.46s ease;
     }
 
     /* Dramatic Stage & Slot Animations */
     @keyframes tilePopIn {
-      0% { transform: scale(0.4) translateY(10px); opacity: 0; }
-      70% { transform: scale(1.08) translateY(-2px); opacity: 1; }
-      100% { transform: scale(1) translateY(0); opacity: 1; }
+      0% { transform: scale(0.35) translateY(12px) rotate(-4deg); opacity: 0; }
+      68% { transform: scale(1.1) translateY(-2px) rotate(1deg); opacity: 1; }
+      100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; }
     }
     .tile-enter {
-      animation: tilePopIn 0.28s var(--spring) forwards;
+      animation: tilePopIn 0.32s var(--spring) forwards;
     }
 
     @keyframes stageEnter {
-      0% { opacity: 0; transform: translateY(22px) scale(0.97); }
+      0% { opacity: 0; transform: translateY(24px) scale(0.96); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
     .stage-enter {
-      animation: stageEnter 0.42s var(--fluid) forwards;
+      animation: stageEnter 0.46s var(--fluid) forwards;
+    }
+
+    @keyframes modalBackdropFade {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .modal-fade-in {
+      animation: modalBackdropFade 0.25s var(--fluid) forwards;
     }
 
     @keyframes errorShake {
@@ -184,15 +237,6 @@
       animation: floatPopup 1.05s var(--fluid) forwards;
     }
 
-    @keyframes nucleusPulse {
-      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.75)); }
-      50% { transform: scale(1.08); filter: drop-shadow(0 0 16px rgba(129, 140, 248, 0.95)); }
-    }
-    .nucleus-glow {
-      transform-origin: center;
-      animation: nucleusPulse 2.4s ease-in-out infinite;
-    }
-
     @keyframes statusBannerPop {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0.72); }
       18% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
@@ -241,7 +285,7 @@
   <canvas id="bg-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
   <div id="screen-flash" class="fixed inset-0 z-40 pointer-events-none"></div>
 
-  <!-- DRAMATIC CENTER NOTIFICATION OVERLAY (WRONG / MOVING ON / COMPLETE) -->
+  <!-- DRAMATIC CENTER NOTIFICATION OVERLAY -->
   <div id="dramatic-notif" class="hidden fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none w-[90%] max-w-md">
     <div id="dramatic-notif-card" class="glass-panel rounded-3xl px-6 py-5 text-center border-2 shadow-2xl">
       <div id="dramatic-notif-icon" class="text-4xl mb-1.5">⚠️</div>
@@ -297,10 +341,10 @@
         </button>
       </div>
 
-      <!-- Scores Modal Trigger -->
+      <!-- Private Teacher Scores Trigger -->
       <button id="btn-open-scores" type="button"
-        class="spring-pill px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 font-mono font-black text-xs tracking-wider uppercase cursor-pointer">
-        SCORES 🏆
+        class="spring-pill px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 font-mono font-black text-xs tracking-wider uppercase flex items-center gap-1.5 cursor-pointer">
+        <span id="scores-lock-badge">🔒</span> SCORES 🏆
       </button>
     </div>
   </header>
@@ -315,6 +359,9 @@
         <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white">
           ORBITAL <span class="text-cyan-400">RUSH</span>
         </h1>
+        <p class="text-[11px] font-mono font-bold tracking-widest uppercase text-slate-400">
+          GRADE 8 • ELECTRON CONFIGURATION
+        </p>
       </div>
 
       <div class="space-y-3">
@@ -335,38 +382,73 @@
   <main id="screen-game" class="hidden relative z-10 flex-1 max-w-5xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
     <div id="stage-wrapper" class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
 
-      <!-- LEFT HERO CARD: LIVE BOHR ATOM VISUALIZER + ELEMENT BADGE (4 COLS) -->
-      <section class="lg:col-span-4 glass-panel rounded-3xl p-5 flex flex-col items-center justify-between gap-4">
-        <!-- Element Header -->
-        <div class="w-full flex items-center justify-between">
-          <span id="el-z-badge" class="px-3 py-1 rounded-xl bg-cyan-500/15 border border-cyan-400/40 font-mono font-black text-sm text-cyan-300">
-            Z = 9
-          </span>
+      <!-- LEFT HERO CARD: LIVE BOHR ATOM VISUALIZER + RICH ELEMENT DETAILS (4 COLS) -->
+      <section id="hero-card" class="lg:col-span-4 glass-panel hero-element-card rounded-3xl p-4 sm:p-5 flex flex-col items-center justify-between gap-3">
+        <!-- Element Header: Atomic Number, Mass & Level -->
+        <div class="w-full flex items-center justify-between gap-1.5">
+          <div class="flex items-center gap-1.5">
+            <span id="el-z-badge" class="px-2.5 py-1 rounded-xl bg-cyan-500/15 border border-cyan-400/40 font-mono font-black text-xs sm:text-sm text-cyan-300">
+              Z = 9
+            </span>
+            <span id="el-mass-badge" class="px-2 py-1 rounded-xl bg-slate-900/90 border border-slate-700/80 font-mono font-bold text-[11px] text-slate-300">
+              18.998 u
+            </span>
+          </div>
           <span id="el-lvl-tag" class="font-mono font-extrabold text-xs tracking-widest text-slate-400">
             01 / 05
           </span>
         </div>
 
-        <!-- Live Interactive Bohr Shell Visualizer -->
-        <div class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center">
+        <!-- Category Badge -->
+        <div class="w-full flex justify-center">
+          <span id="el-category-badge" class="px-3 py-0.5 rounded-full text-[10px] font-mono font-extrabold tracking-widest uppercase border bg-emerald-500/15 text-emerald-300 border-emerald-400/40">
+            HALOGEN
+          </span>
+        </div>
+
+        <!-- Live Interactive Bohr Shell Visualizer (K, L, M, N + 3D Nucleus) -->
+        <div class="relative w-52 h-52 sm:w-56 sm:h-56 flex items-center justify-center my-0.5">
           <canvas id="atom-canvas" class="w-full h-full"></canvas>
           <!-- Center Element Symbol Overlay -->
           <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span id="el-symbol" class="text-3xl sm:text-4xl font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">F</span>
-            <span id="el-name" class="text-[10px] font-extrabold uppercase tracking-widest text-cyan-200 bg-slate-950/75 px-2 py-0.5 rounded-full border border-cyan-400/30 mt-0.5">
+            <span id="el-symbol" class="text-3xl sm:text-4xl font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">F</span>
+            <span id="el-name" class="text-[9px] font-extrabold uppercase tracking-widest text-cyan-100 bg-slate-950/80 px-2 py-0.5 rounded-full border border-cyan-400/35 mt-0.5">
               FLUORINE
             </span>
           </div>
         </div>
 
+        <!-- Subatomic Particle Trio (Protons, Neutrons, Electrons) -->
+        <div class="w-full grid grid-cols-3 gap-1.5 text-center font-mono">
+          <div class="bg-slate-950/80 py-1.5 px-2 rounded-xl border border-rose-500/25">
+            <div class="text-[9px] font-bold text-rose-300/80">PROTONS p⁺</div>
+            <div id="el-protons" class="text-xs font-black text-rose-300">9</div>
+          </div>
+          <div class="bg-slate-950/80 py-1.5 px-2 rounded-xl border border-indigo-500/25">
+            <div class="text-[9px] font-bold text-indigo-300/80">NEUTRONS n⁰</div>
+            <div id="el-neutrons" class="text-xs font-black text-indigo-300">10</div>
+          </div>
+          <div class="bg-slate-950/80 py-1.5 px-2 rounded-xl border border-cyan-500/25">
+            <div class="text-[9px] font-bold text-cyan-300/80">TARGET e⁻</div>
+            <div id="el-electrons" class="text-xs font-black text-cyan-300">9</div>
+          </div>
+        </div>
+
+        <!-- Shell Distribution Pills (K • L • M • N) -->
+        <div class="w-full bg-slate-950/75 px-3 py-2 rounded-2xl border border-slate-800/90 flex items-center justify-between gap-2">
+          <span class="text-[10px] font-mono font-extrabold tracking-wider uppercase text-slate-400">SHELLS</span>
+          <div id="el-shells-pills" class="flex items-center gap-1.5 font-mono text-xs font-black">
+          </div>
+        </div>
+
         <!-- Live Electron Counter Bar -->
-        <div class="w-full bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800/90 space-y-2">
+        <div class="w-full bg-slate-950/85 p-3 rounded-2xl border border-slate-800/90 space-y-1.5">
           <div class="flex items-center justify-between font-mono text-xs font-extrabold">
             <span id="active-zone-label" class="text-cyan-400 tracking-wider">LONGHAND</span>
             <span id="electron-counter" class="text-white">0 / 9 e⁻</span>
           </div>
           <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
-            <div id="electron-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all duration-300" style="width: 0%"></div>
+            <div id="electron-bar" class="energy-bar-fill h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" style="width: 0%"></div>
           </div>
         </div>
       </section>
@@ -521,8 +603,57 @@
     </div>
   </main>
 
-  <!-- LIVE CLOUD SCORES MODAL (TEACHER & CLASS LEADERBOARD) -->
-  <div id="scores-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+  <!-- PRIVATE TEACHER PIN GATE MODAL -->
+  <div id="pin-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 modal-fade-in">
+    <div id="pin-card" class="glass-panel w-full max-w-xs rounded-3xl p-6 text-center space-y-5 stage-enter border border-cyan-500/30">
+      <div class="flex items-center justify-between">
+        <span class="font-mono text-[10px] font-extrabold tracking-widest uppercase text-cyan-400">TEACHER ACCESS</span>
+        <button id="btn-close-pin" type="button"
+          class="spring-pill w-7 h-7 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 font-black text-xs flex items-center justify-center cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-400/40 flex items-center justify-center text-2xl shadow-inner">
+          🔐
+        </div>
+        <h3 class="text-lg font-black tracking-wide text-white">ENTER TEACHER PIN</h3>
+        <p class="text-[11px] font-mono text-slate-400">RESTRICTED LEADERBOARD</p>
+      </div>
+
+      <!-- 4-Dot Visual PIN Indicator -->
+      <div id="pin-dots" class="flex items-center justify-center gap-3 py-1">
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-600 bg-slate-900 transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-600 bg-slate-900 transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-600 bg-slate-900 transition-all"></span>
+        <span class="w-3.5 h-3.5 rounded-full border-2 border-slate-600 bg-slate-900 transition-all"></span>
+      </div>
+
+      <div id="pin-error-text" class="hidden text-[11px] font-mono font-extrabold text-rose-400 tracking-wider">
+        INVALID PIN • ACCESS DENIED
+      </div>
+
+      <!-- Tactile Numeric Keypad -->
+      <div class="grid grid-cols-3 gap-2 font-mono font-black text-base">
+        <button type="button" data-pin-key="1" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">1</button>
+        <button type="button" data-pin-key="2" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">2</button>
+        <button type="button" data-pin-key="3" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">3</button>
+        <button type="button" data-pin-key="4" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">4</button>
+        <button type="button" data-pin-key="5" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">5</button>
+        <button type="button" data-pin-key="6" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">6</button>
+        <button type="button" data-pin-key="7" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">7</button>
+        <button type="button" data-pin-key="8" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">8</button>
+        <button type="button" data-pin-key="9" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">9</button>
+        <button type="button" id="btn-pin-clear" class="spring-tile py-3 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-rose-300 text-xs cursor-pointer">CLR</button>
+        <button type="button" data-pin-key="0" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-white cursor-pointer">0</button>
+        <button type="button" id="btn-pin-back" class="spring-tile py-3 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/90 text-slate-300 text-xs cursor-pointer">⌫</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVE CLOUD SCORES MODAL (UNLOCKED TEACHER LEADERBOARD) -->
+  <div id="scores-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 modal-fade-in">
     <div class="glass-panel w-full max-w-3xl max-h-[85vh] rounded-3xl p-5 sm:p-6 flex flex-col gap-4 stage-enter">
       <!-- Modal Top Bar -->
       <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
@@ -531,7 +662,7 @@
           <span id="scores-count" class="px-2 py-0.5 rounded-lg bg-cyan-500/15 border border-cyan-400/40 font-mono text-xs font-extrabold text-cyan-300">0</span>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <select id="filter-section" aria-label="Section"
             class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-slate-200 uppercase focus:outline-none focus:border-cyan-400">
             <option value="ALL">ALL SECTIONS</option>
@@ -539,6 +670,10 @@
           <button id="btn-export-csv" type="button"
             class="spring-pill px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-black text-xs tracking-wider uppercase cursor-pointer">
             EXPORT CSV
+          </button>
+          <button id="btn-lock-scores" type="button"
+            class="spring-pill px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-300 font-mono font-black text-xs tracking-wider uppercase cursor-pointer">
+            🔒 LOCK
           </button>
           <button id="btn-close-scores" type="button"
             class="spring-pill w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-black text-sm flex items-center justify-center cursor-pointer">
@@ -584,6 +719,14 @@
     } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     /**
+     * =========================================================================
+     * TEACHER CONFIGURATION: CHANGE YOUR PRIVATE SCORES PIN HERE
+     * Session-only unlock: refreshing or opening a new link always requires PIN.
+     * =========================================================================
+     */
+    const TEACHER_PIN = "2026";
+
+    /**
      * 0. FIREBASE INITIALIZATION
      */
     const firebaseConfig = {
@@ -606,7 +749,7 @@
     }
 
     /**
-     * 1. WEB AUDIO SYNTHESIZER (Tactile Clicks, Arpeggio Combos, Low Buzz)
+     * 1. WEB AUDIO SYNTHESIZER (Tactile Clicks, Arpeggio Combos, Low Buzz, Unlock Chime)
      */
     const SFX = (() => {
       let ctx = null;
@@ -648,6 +791,10 @@
         unpop() {
           tone(360, 'triangle', 0.07, 0, 0.08);
         },
+        unlock() {
+          tone(660, 'sine', 0.11, 0, 0.12);
+          tone(880, 'triangle', 0.18, 0.08, 0.14);
+        },
         buzz() {
           tone(155, 'sawtooth', 0.18, 0, 0.12);
           tone(120, 'sawtooth', 0.24, 0.11, 0.12);
@@ -688,9 +835,8 @@
 
       const starPalette = ['#e0f2fe', '#bae6fd', '#ddd6fe', '#fbcfe8', '#fef08a', '#a5f3fc'];
 
-      // Multi-depth Parallax Twinkling Stars
       for (let i = 0; i < 140; i++) {
-        const layer = i % 3; // 0 = far, 1 = mid, 2 = near
+        const layer = i % 3;
         stars.push({
           x: Math.random() * w,
           y: Math.random() * h,
@@ -705,7 +851,6 @@
         });
       }
 
-      // Rotating Spiral Galaxy Cluster Particles
       for (let i = 0; i < 160; i++) {
         const arm = i % 3;
         const dist = Math.pow(Math.random(), 0.75) * 260 + 18;
@@ -754,7 +899,6 @@
       function loop() {
         ctx.clearRect(0, 0, w, h);
 
-        // Subtle Rotating Spiral Galaxy Core in Deep Background
         galaxyAngle += 0.0014;
         const gx = w * 0.5;
         const gy = h * 0.48;
@@ -777,7 +921,6 @@
           ctx.fill();
         }
 
-        // Twinkling Parallax Starfield
         for (const s of stars) {
           s.x += s.vx;
           s.y += s.vy;
@@ -795,7 +938,6 @@
           ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
           ctx.fill();
 
-          // Cross-sparkle flare on bright foreground stars
           if (s.flare) {
             ctx.strokeStyle = s.color;
             ctx.lineWidth = 0.8;
@@ -810,7 +952,6 @@
           ctx.restore();
         }
 
-        // Occasional Shooting Stars
         maybeSpawnShootingStar();
         for (let i = shootingStars.length - 1; i >= 0; i--) {
           const ss = shootingStars[i];
@@ -837,12 +978,11 @@
           ctx.stroke();
         }
 
-        // Confetti Bursts
         for (let i = bursts.length - 1; i >= 0; i--) {
           const p = bursts[i];
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.16; // Gravity
+          p.vy += 0.16;
           p.vx *= 0.98;
           p.rot += 0.12;
           p.life -= p.decay;
@@ -867,15 +1007,24 @@
     })();
 
     /**
-     * 3. LIVE INTERACTIVE BOHR SHELL VISUALIZER (Concentric Shells n=1,2,3,4)
+     * 3. ENHANCED INTERACTIVE BOHR SHELL VISUALIZER
+     * Features:
+     * - Fluid shell count interpolation & glowing electron orbital trails/wakes
+     * - 3D-like pulsing proton/neutron nucleus cluster scaled to Z
+     * - Shell labels: K (n=1), L (n=2), M (n=3), N (n=4)
+     * - Outer valence shell highlight ring & photon energy pulse waves
      */
     const BohrVisualizer = (() => {
       const canvas = document.getElementById('atom-canvas');
       const ctx = canvas.getContext('2d');
       let targetShellCounts = [0, 0, 0, 0];
+      let smoothShellGlow = [0, 0, 0, 0];
+      let protons = 9;
+      let neutrons = 10;
+      let nucleonSeeds = [];
+      let energyPulses = [];
       let angle = 0;
 
-      // Shell mapping for each orbital tile
       const SHELL_MAP = {
         '[He]': [2, 0, 0, 0],
         '[Ne]': [2, 8, 0, 0],
@@ -900,13 +1049,41 @@
         '4p¹': [0, 0, 0, 1]
       };
 
-      function updateFromTiles(tiles) {
+      function setNucleus(pCount, nCount) {
+        protons = pCount;
+        neutrons = nCount;
+        const total = Math.min(36, pCount + nCount);
+        nucleonSeeds = [];
+        for (let i = 0; i < total; i++) {
+          const goldenAngle = i * 2.399963229728653;
+          const radiusFactor = Math.sqrt(i / total);
+          nucleonSeeds.push({
+            angle: goldenAngle,
+            rFactor: radiusFactor,
+            isProton: i % 2 === 0,
+            phase: i * 0.45
+          });
+        }
+      }
+
+      function triggerPhotonPulse(color = '#22d3ee') {
+        energyPulses.push({
+          progress: 0,
+          color
+        });
+      }
+
+      function updateFromTiles(tiles, emitPulse = false) {
         const counts = [0, 0, 0, 0];
         for (const t of tiles) {
           const add = SHELL_MAP[t] || [0, 0, 0, 0];
           for (let i = 0; i < 4; i++) counts[i] += add[i];
         }
+        const changed = counts.some((c, idx) => c !== targetShellCounts[idx]);
         targetShellCounts = counts;
+        if (emitPulse && changed) {
+          triggerPhotonPulse('#22d3ee');
+        }
       }
 
       function render() {
@@ -921,47 +1098,161 @@
         const h = canvas.height;
         const cx = w / 2;
         const cy = h / 2;
-        const maxR = Math.min(cx, cy) - 10 * dpr;
+        const maxR = Math.min(cx, cy) - 12 * dpr;
 
         ctx.clearRect(0, 0, w, h);
-        angle += 0.016;
+        angle += 0.018;
 
-        // Concentric Shell Rings (n = 1, 2, 3, 4)
-        const radii = [maxR * 0.44, maxR * 0.62, maxR * 0.80, maxR * 0.98];
+        // Concentric Shell Rings: K (n=1), L (n=2), M (n=3), N (n=4)
+        const radii = [maxR * 0.42, maxR * 0.60, maxR * 0.78, maxR * 0.96];
         const ringColors = ['#a78bfa', '#34d399', '#fb7185', '#38bdf8'];
+        const shellNames = ['K', 'L', 'M', 'N'];
 
-        // Nucleus Aura
-        const grad = ctx.createRadialGradient(cx, cy, 4 * dpr, cx, cy, maxR * 0.34);
-        grad.addColorStop(0, 'rgba(99, 102, 241, 0.55)');
+        // Determine highest occupied shell (Valence Shell)
+        let outermostOccupied = -1;
+        for (let i = 3; i >= 0; i--) {
+          if (targetShellCounts[i] > 0) {
+            outermostOccupied = i;
+            break;
+          }
+        }
+
+        // Dynamic Nucleus Aura & 3D Nucleon Cluster
+        const nucScale = 1 + Math.sin(angle * 1.8) * 0.04;
+        const auraRadius = maxR * (0.28 + Math.min(protons, 30) * 0.0025) * nucScale;
+        const grad = ctx.createRadialGradient(cx, cy, 2 * dpr, cx, cy, auraRadius * 1.45);
+        grad.addColorStop(0, 'rgba(244, 63, 94, 0.48)');
+        grad.addColorStop(0.5, 'rgba(99, 102, 241, 0.28)');
         grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
         ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(cx, cy, maxR * 0.34, 0, Math.PI * 2);
+        ctx.arc(cx, cy, auraRadius * 1.45, 0, Math.PI * 2);
         ctx.fill();
 
+        // Render 3D-shaded Proton & Neutron Spheres behind central badge
+        const clusterMaxR = maxR * 0.23 * nucScale;
+        for (const n of nucleonSeeds) {
+          const wobble = Math.sin(angle * 2.2 + n.phase) * 1.2 * dpr;
+          const na = n.angle + angle * 0.35;
+          const nr = n.rFactor * clusterMaxR + wobble;
+          const nx = cx + Math.cos(na) * nr;
+          const ny = cy + Math.sin(na) * nr;
+          const sphereR = 3.1 * dpr;
+
+          const sGrad = ctx.createRadialGradient(
+            nx - sphereR * 0.3,
+            ny - sphereR * 0.3,
+            0.5 * dpr,
+            nx,
+            ny,
+            sphereR
+          );
+          if (n.isProton) {
+            sGrad.addColorStop(0, '#fda4af');
+            sGrad.addColorStop(0.6, '#f43f5e');
+            sGrad.addColorStop(1, '#881337');
+          } else {
+            sGrad.addColorStop(0, '#c7d2fe');
+            sGrad.addColorStop(0.6, '#6366f1');
+            sGrad.addColorStop(1, '#1e1b4b');
+          }
+          ctx.fillStyle = sGrad;
+          ctx.beginPath();
+          ctx.arc(nx, ny, sphereR, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Expanding Photon Energy Pulses
+        for (let i = energyPulses.length - 1; i >= 0; i--) {
+          const p = energyPulses[i];
+          p.progress += 0.032;
+          if (p.progress >= 1) {
+            energyPulses.splice(i, 1);
+            continue;
+          }
+          const pr = maxR * (0.25 + p.progress * 0.78);
+          ctx.save();
+          ctx.globalAlpha = (1 - p.progress) * 0.7;
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = (3.5 * (1 - p.progress)) * dpr;
+          ctx.beginPath();
+          ctx.arc(cx, cy, pr, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Draw Concentric Shells & Orbiting Electrons with Glowing Wakes
         radii.forEach((r, sIdx) => {
           const count = targetShellCounts[sIdx];
-          ctx.strokeStyle = count > 0 ? 'rgba(148, 163, 184, 0.34)' : 'rgba(148, 163, 184, 0.11)';
-          ctx.lineWidth = (count > 0 ? 1.5 : 1) * dpr;
+          const targetGlow = count > 0 ? 1 : 0;
+          smoothShellGlow[sIdx] += (targetGlow - smoothShellGlow[sIdx]) * 0.12;
+          const isValence = sIdx === outermostOccupied;
+
+          // Valence Shell Highlight Halo
+          if (isValence) {
+            ctx.save();
+            ctx.strokeStyle = ringColors[sIdx];
+            ctx.globalAlpha = 0.22 + Math.sin(angle * 3) * 0.08;
+            ctx.lineWidth = 4.5 * dpr;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // Orbit Path
+          ctx.strokeStyle = count > 0
+            ? (isValence ? 'rgba(224, 242, 254, 0.55)' : 'rgba(148, 163, 184, 0.34)')
+            : 'rgba(148, 163, 184, 0.12)';
+          ctx.lineWidth = (isValence ? 1.8 : count > 0 ? 1.4 : 1) * dpr;
           ctx.beginPath();
           ctx.arc(cx, cy, r, 0, Math.PI * 2);
           ctx.stroke();
 
-          // Orbiting Electrons
+          // Subtle Shell Label (K, L, M, N) at top of ring
+          ctx.save();
+          ctx.font = `800 ${Math.round(8.5 * dpr)}px "JetBrains Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillStyle = count > 0 ? ringColors[sIdx] : 'rgba(148, 163, 184, 0.35)';
+          ctx.fillText(shellNames[sIdx], cx, cy - r + 9.5 * dpr);
+          ctx.restore();
+
+          // Orbiting Electrons + Motion Wake Arcs
           const dir = sIdx % 2 === 0 ? 1 : -1;
-          const speed = 1 - sIdx * 0.16;
+          const speed = 1 - sIdx * 0.15;
           for (let e = 0; e < count; e++) {
             const theta = angle * speed * dir + (e * Math.PI * 2) / count;
             const ex = cx + Math.cos(theta) * r;
             const ey = cy + Math.sin(theta) * r;
 
-            ctx.shadowBlur = 8 * dpr;
+            // Glowing Orbital Trail Wake
+            const trailSpan = 0.42;
+            const startA = dir > 0 ? theta - trailSpan : theta;
+            const endA = dir > 0 ? theta : theta + trailSpan;
+            ctx.save();
+            ctx.strokeStyle = ringColors[sIdx];
+            ctx.globalAlpha = 0.36;
+            ctx.lineWidth = 2.4 * dpr;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, startA, endA);
+            ctx.stroke();
+            ctx.restore();
+
+            // Electron Core + Outer Halo
+            ctx.shadowBlur = 10 * dpr;
             ctx.shadowColor = ringColors[sIdx];
             ctx.fillStyle = ringColors[sIdx];
             ctx.beginPath();
-            ctx.arc(ex, ey, 3.2 * dpr, 0, Math.PI * 2);
+            ctx.arc(ex, ey, (isValence ? 3.8 : 3.2) * dpr, 0, Math.PI * 2);
             ctx.fill();
+
+            // Bright Specular Center Dot
             ctx.shadowBlur = 0;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(ex, ey, 1.3 * dpr, 0, Math.PI * 2);
+            ctx.fill();
           }
         });
 
@@ -969,17 +1260,23 @@
       }
       render();
 
-      return { updateFromTiles };
+      return { updateFromTiles, setNucleus, triggerPhotonPulse };
     })();
 
     /**
-     * 4. EXACTLY 5 OBJECTIVE LEVELS (F, Al, Ca, Sc, Fe)
+     * 4. EXACTLY 5 OBJECTIVE LEVELS WITH RICH ELEMENT METADATA (F, Al, Ca, Sc, Fe)
      */
     const LEVELS = [
       {
         symbol: 'F',
         name: 'FLUORINE',
         z: 9,
+        mass: '18.998 u',
+        neutrons: 10,
+        category: 'HALOGEN',
+        categoryStyle: 'bg-emerald-500/15 text-emerald-300 border-emerald-400/45',
+        auraColor: 'rgba(52, 211, 153, 0.28)',
+        shells: [2, 7],
         longhand: ['1s²', '2s²', '2p⁵'],
         nobleGas: ['[He]', '2s²', '2p⁵'],
         period: '2',
@@ -991,6 +1288,12 @@
         symbol: 'Al',
         name: 'ALUMINUM',
         z: 13,
+        mass: '26.982 u',
+        neutrons: 14,
+        category: 'POST-TRANSITION METAL',
+        categoryStyle: 'bg-sky-500/15 text-sky-300 border-sky-400/45',
+        auraColor: 'rgba(56, 189, 248, 0.28)',
+        shells: [2, 8, 3],
         longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p¹'],
         nobleGas: ['[Ne]', '3s²', '3p¹'],
         period: '3',
@@ -1002,6 +1305,12 @@
         symbol: 'Ca',
         name: 'CALCIUM',
         z: 20,
+        mass: '40.078 u',
+        neutrons: 20,
+        category: 'ALKALINE EARTH METAL',
+        categoryStyle: 'bg-violet-500/15 text-violet-300 border-violet-400/45',
+        auraColor: 'rgba(167, 139, 250, 0.28)',
+        shells: [2, 8, 8, 2],
         longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²'],
         nobleGas: ['[Ar]', '4s²'],
         period: '4',
@@ -1013,6 +1322,12 @@
         symbol: 'Sc',
         name: 'SCANDIUM',
         z: 21,
+        mass: '44.956 u',
+        neutrons: 24,
+        category: 'TRANSITION METAL',
+        categoryStyle: 'bg-rose-500/15 text-rose-300 border-rose-400/45',
+        auraColor: 'rgba(251, 113, 133, 0.28)',
+        shells: [2, 8, 9, 2],
         longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d¹'],
         nobleGas: ['[Ar]', '4s²', '3d¹'],
         period: '4',
@@ -1024,6 +1339,12 @@
         symbol: 'Fe',
         name: 'IRON',
         z: 26,
+        mass: '55.845 u',
+        neutrons: 30,
+        category: 'TRANSITION METAL',
+        categoryStyle: 'bg-amber-500/15 text-amber-300 border-amber-400/45',
+        auraColor: 'rgba(251, 191, 36, 0.28)',
+        shells: [2, 8, 14, 2],
         longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d⁶'],
         nobleGas: ['[Ar]', '4s²', '3d⁶'],
         period: '4',
@@ -1055,10 +1376,15 @@
       lhTiles: [],
       ngTiles: [],
       selPeriod: '',
-      results: [], // { symbol, passed }
+      selBlock: '',
+      selValence: '',
+      results: [],
       lastPayload: null,
       cloudSubmitted: false,
-      cachedRows: []
+      cachedRows: [],
+      // Session-only teacher PIN lock state (never persisted so new links/refreshes stay locked)
+      scoresUnlocked: false,
+      pinBuffer: ''
     };
 
     function shuffle(arr) {
@@ -1082,6 +1408,32 @@
       return 'bg-slate-800 text-white border-slate-600';
     }
 
+    /**
+     * Spawn a glowing photon trail flying from the clicked tile to the Bohr Visualizer
+     */
+    function spawnFlyingPhoton(sourceBtn, labelText) {
+      if (!sourceBtn) return;
+      const srcRect = sourceBtn.getBoundingClientRect();
+      const atomRect = document.getElementById('atom-canvas').getBoundingClientRect();
+      if (atomRect.width === 0) return;
+
+      const photon = document.createElement('div');
+      photon.className = 'flying-photon';
+      photon.textContent = labelText;
+      photon.style.left = `${srcRect.left + srcRect.width / 2}px`;
+      photon.style.top = `${srcRect.top + srcRect.height / 2}px`;
+      document.body.appendChild(photon);
+
+      requestAnimationFrame(() => {
+        photon.style.left = `${atomRect.left + atomRect.width / 2}px`;
+        photon.style.top = `${atomRect.top + atomRect.height / 2}px`;
+        photon.style.transform = 'translate(-50%, -50%) scale(0.35)';
+        photon.style.opacity = '0';
+      });
+
+      setTimeout(() => photon.remove(), 480);
+    }
+
     function loadLevel(index) {
       state.idx = index;
       state.activeZone = 'longhand';
@@ -1092,16 +1444,19 @@
       state.selValence = '';
       state.shuffledBank = shuffle(LEVELS[index].bank);
 
+      const lvl = LEVELS[index];
+      BohrVisualizer.setNucleus(lvl.z, lvl.neutrons);
+      BohrVisualizer.triggerPhotonPulse('#a78bfa');
+
       const wrapper = document.getElementById('stage-wrapper');
       wrapper.classList.remove('stage-enter');
       void wrapper.offsetWidth;
       wrapper.classList.add('stage-enter');
 
-      render();
+      render(false);
     }
 
     function renderHUD() {
-      // Level Dots (1-5)
       const dotsEl = document.getElementById('hud-dots');
       dotsEl.innerHTML = '';
       LEVELS.forEach((_, i) => {
@@ -1126,15 +1481,41 @@
       document.getElementById('hud-hearts').textContent = heartsStr;
     }
 
-    function render() {
+    function render(emitPhotonPulse = true) {
       const lvl = LEVELS[state.idx];
       renderHUD();
 
-      // Left Hero Card
+      // Dynamic Element Family Glow Aura
+      document.documentElement.style.setProperty('--hero-glow', lvl.auraColor);
+
+      // Left Hero Card Metadata
       document.getElementById('el-z-badge').textContent = `Z = ${lvl.z}`;
+      document.getElementById('el-mass-badge').textContent = lvl.mass;
       document.getElementById('el-lvl-tag').textContent = `0${state.idx + 1} / 05`;
+
+      const catBadge = document.getElementById('el-category-badge');
+      catBadge.textContent = lvl.category;
+      catBadge.className = `px-3 py-0.5 rounded-full text-[10px] font-mono font-extrabold tracking-widest uppercase border ${lvl.categoryStyle}`;
+
       document.getElementById('el-symbol').textContent = lvl.symbol;
       document.getElementById('el-name').textContent = lvl.name;
+
+      document.getElementById('el-protons').textContent = lvl.z;
+      document.getElementById('el-neutrons').textContent = lvl.neutrons;
+      document.getElementById('el-electrons').textContent = lvl.z;
+
+      // Shell Distribution Pills (K, L, M, N)
+      const shellsEl = document.getElementById('el-shells-pills');
+      const shellLetters = ['K', 'L', 'M', 'N'];
+      const shellColors = [
+        'text-violet-300 border-violet-500/40 bg-violet-500/10',
+        'text-emerald-300 border-emerald-500/40 bg-emerald-500/10',
+        'text-rose-300 border-rose-500/40 bg-rose-500/10',
+        'text-sky-300 border-sky-500/40 bg-sky-500/10'
+      ];
+      shellsEl.innerHTML = lvl.shells.map((val, idx) =>
+        `<span class="px-2 py-0.5 rounded-lg border text-[11px] ${shellColors[idx]}">${shellLetters[idx]}:${val}</span>`
+      ).join('');
 
       const lhSum = sumE(state.lhTiles);
       const ngSum = sumE(state.ngTiles);
@@ -1144,7 +1525,7 @@
       // Active Zone Electron Bar + Bohr Atom Visualizer Sync
       const activeTiles = state.activeZone === 'longhand' ? state.lhTiles : state.ngTiles;
       const activeSum = state.activeZone === 'longhand' ? lhSum : ngSum;
-      BohrVisualizer.updateFromTiles(activeTiles);
+      BohrVisualizer.updateFromTiles(activeTiles, emitPhotonPulse);
 
       const zoneLabel = document.getElementById('active-zone-label');
       zoneLabel.textContent = state.activeZone === 'longhand' ? 'LONGHAND' : 'NOBLE GAS';
@@ -1160,13 +1541,13 @@
 
       if (activeSum > lvl.z) {
         counterEl.className = 'text-rose-400 font-black';
-        barEl.className = 'h-full rounded-full bg-rose-500 transition-all duration-300';
+        barEl.className = 'energy-bar-fill h-full rounded-full bg-rose-500';
       } else if (activeSum === lvl.z) {
         counterEl.className = 'text-emerald-400 font-black';
-        barEl.className = 'h-full rounded-full bg-emerald-400 transition-all duration-300';
+        barEl.className = 'energy-bar-fill h-full rounded-full bg-emerald-400';
       } else {
         counterEl.className = 'text-white';
-        barEl.className = 'h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all duration-300';
+        barEl.className = 'energy-bar-fill h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400';
       }
 
       // Zone Focus Highlights
@@ -1188,7 +1569,7 @@
         btn.textContent = tile;
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          addTileToActiveZone(tile);
+          addTileToActiveZone(tile, e.currentTarget);
         });
         bankEl.appendChild(btn);
       });
@@ -1218,7 +1599,7 @@
           state.activeZone = zoneName;
           if (zoneName === 'longhand') state.lhTiles.splice(idx, 1);
           else state.ngTiles.splice(idx, 1);
-          render();
+          render(true);
         });
         container.appendChild(chip);
       });
@@ -1240,34 +1621,32 @@
         btn.addEventListener('click', () => {
           SFX.pop();
           onSelect(opt);
-          render();
+          render(false);
         });
         el.appendChild(btn);
       });
     }
 
-    function addTileToActiveZone(tile) {
+    function addTileToActiveZone(tile, sourceBtn = null) {
       SFX.pop();
       const target = state.activeZone === 'longhand' ? state.lhTiles : state.ngTiles;
       if (!target.includes(tile)) {
         target.push(tile);
+        spawnFlyingPhoton(sourceBtn, tile);
       }
-      // Auto-advance focus to NOBLE GAS once LONGHAND hits target Z
       const lvl = LEVELS[state.idx];
       if (state.activeZone === 'longhand' && sumE(state.lhTiles) === lvl.z && state.ngTiles.length === 0) {
         state.activeZone = 'noblegas';
       }
-      render();
+      render(true);
     }
 
     function triggerCelebration(points, streak) {
-      // Shockwave Ring
       const ring = document.createElement('div');
       ring.className = 'shockwave';
       document.body.appendChild(ring);
       setTimeout(() => ring.remove(), 700);
 
-      // Floating Score Popup
       const pop = document.createElement('div');
       pop.className = 'score-popup text-center';
       pop.innerHTML = `
@@ -1277,7 +1656,6 @@
       document.body.appendChild(pop);
       setTimeout(() => pop.remove(), 1100);
 
-      // Confetti Burst
       ParticleEngine.spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.45, 55);
     }
 
@@ -1332,7 +1710,6 @@
       void flash.offsetWidth;
       flash.classList.add('flash-finale');
 
-      // Multi-stage shockwaves + fireworks confetti
       [0, 220, 440].forEach((delay, idx) => {
         setTimeout(() => {
           const ring = document.createElement('div');
@@ -1378,6 +1755,7 @@
         state.score += earned;
         state.results.push({ symbol: lvl.symbol, passed: true });
         SFX.clear(state.streak);
+        BohrVisualizer.triggerPhotonPulse('#34d399');
         triggerCelebration(earned, state.streak);
         state.streak++;
         renderHUD();
@@ -1446,7 +1824,6 @@
       const secs = String(elapsedSec % 60).padStart(2, '0');
       const accuracy = state.checks > 0 ? Math.round((state.hits / state.checks) * 100) : 0;
 
-      // Rank S / A / B / C
       let grade = 'C';
       let badgeGrad = 'from-slate-400 to-slate-600';
       if (accuracy >= 90 && state.hits === 5) {
@@ -1472,7 +1849,6 @@
       animateCounter(document.getElementById('rcp-score'), state.score);
       animateCounter(document.getElementById('rcp-acc'), accuracy, '%');
 
-      // 5-Level Chips
       const chipsEl = document.getElementById('rcp-chips');
       chipsEl.innerHTML = '';
       LEVELS.forEach((lvl, i) => {
@@ -1490,7 +1866,6 @@
         chipsEl.appendChild(chip);
       });
 
-      // Verification Hash
       const raw = `${state.player}|${state.section}|${state.score}|${accuracy}`;
       let hash = 0;
       for (let i = 0; i < raw.length; i++) {
@@ -1536,7 +1911,7 @@
           try {
             await signInAnonymously(auth);
           } catch (_) {
-            // Proceed even if Anonymous Auth is disabled in Console; Firestore rules will govern access
+            // Proceed even if Anonymous Auth is disabled
           }
         }
 
@@ -1562,8 +1937,89 @@
       }
     }
 
-    async function openScoresModal() {
+    /**
+     * =========================================================================
+     * 5. PRIVATE TEACHER PIN GATE & LEADERBOARD LOGIC
+     * =========================================================================
+     */
+    function updatePinDotsUI() {
+      const dots = document.querySelectorAll('#pin-dots span');
+      dots.forEach((dot, idx) => {
+        if (idx < state.pinBuffer.length) {
+          dot.className = 'w-3.5 h-3.5 rounded-full border-2 border-cyan-300 bg-cyan-400 shadow-[0_0_12px_#22d3ee] scale-110 transition-all';
+        } else {
+          dot.className = 'w-3.5 h-3.5 rounded-full border-2 border-slate-600 bg-slate-900 transition-all';
+        }
+      });
+    }
+
+    function openPinModal() {
+      state.pinBuffer = '';
+      updatePinDotsUI();
+      document.getElementById('pin-error-text').classList.add('hidden');
+      document.getElementById('pin-modal').classList.remove('hidden');
+    }
+
+    function closePinModal() {
+      state.pinBuffer = '';
+      document.getElementById('pin-modal').classList.add('hidden');
+    }
+
+    function handlePinDigit(digit) {
+      if (state.pinBuffer.length >= TEACHER_PIN.length) return;
       SFX.pop();
+      state.pinBuffer += digit;
+      updatePinDotsUI();
+
+      if (state.pinBuffer.length === TEACHER_PIN.length) {
+        if (state.pinBuffer === TEACHER_PIN) {
+          SFX.unlock();
+          state.scoresUnlocked = true;
+          document.getElementById('scores-lock-badge').textContent = '🔓';
+          setTimeout(() => {
+            closePinModal();
+            openScoresModal();
+          }, 160);
+        } else {
+          SFX.buzz();
+          const card = document.getElementById('pin-card');
+          const errEl = document.getElementById('pin-error-text');
+          errEl.classList.remove('hidden');
+          card.classList.remove('shake-error');
+          void card.offsetWidth;
+          card.classList.add('shake-error');
+
+          setTimeout(() => {
+            state.pinBuffer = '';
+            updatePinDotsUI();
+          }, 360);
+        }
+      }
+    }
+
+    function handleScoresButtonClick() {
+      SFX.pop();
+      if (state.scoresUnlocked) {
+        openScoresModal();
+      } else {
+        openPinModal();
+      }
+    }
+
+    function lockScoresSession() {
+      SFX.unpop();
+      state.scoresUnlocked = false;
+      state.pinBuffer = '';
+      state.cachedRows = [];
+      document.getElementById('scores-lock-badge').textContent = '🔒';
+      document.getElementById('scores-modal').classList.add('hidden');
+    }
+
+    async function openScoresModal() {
+      if (!state.scoresUnlocked) {
+        openPinModal();
+        return;
+      }
       const modal = document.getElementById('scores-modal');
       const tbody = document.getElementById('scores-tbody');
       const sectionSelect = document.getElementById('filter-section');
@@ -1646,6 +2102,7 @@
     }
 
     function exportScoresCSV() {
+      if (!state.scoresUnlocked) return;
       const filter = document.getElementById('filter-section').value;
       const rows = filter === 'ALL'
         ? state.cachedRows
@@ -1684,7 +2141,45 @@
 
     // Event Bindings
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('btn-open-scores').addEventListener('click', openScoresModal);
+      // Teacher PIN Gate & Scores Bindings
+      document.getElementById('btn-open-scores').addEventListener('click', handleScoresButtonClick);
+      document.getElementById('btn-close-pin').addEventListener('click', () => {
+        SFX.unpop();
+        closePinModal();
+      });
+      document.querySelectorAll('[data-pin-key]').forEach(btn => {
+        btn.addEventListener('click', () => handlePinDigit(btn.dataset.pinKey));
+      });
+      document.getElementById('btn-pin-clear').addEventListener('click', () => {
+        SFX.unpop();
+        state.pinBuffer = '';
+        updatePinDotsUI();
+        document.getElementById('pin-error-text').classList.add('hidden');
+      });
+      document.getElementById('btn-pin-back').addEventListener('click', () => {
+        SFX.unpop();
+        state.pinBuffer = state.pinBuffer.slice(0, -1);
+        updatePinDotsUI();
+      });
+
+      // Physical Keyboard Support when PIN modal is visible
+      document.addEventListener('keydown', (e) => {
+        const pinModal = document.getElementById('pin-modal');
+        if (pinModal.classList.contains('hidden')) return;
+        if (e.key >= '0' && e.key <= '9') {
+          e.preventDefault();
+          handlePinDigit(e.key);
+        } else if (e.key === 'Backspace') {
+          e.preventDefault();
+          state.pinBuffer = state.pinBuffer.slice(0, -1);
+          updatePinDotsUI();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          closePinModal();
+        }
+      });
+
+      document.getElementById('btn-lock-scores').addEventListener('click', lockScoresSession);
       document.getElementById('btn-close-scores').addEventListener('click', () => {
         SFX.unpop();
         document.getElementById('scores-modal').classList.add('hidden');
@@ -1692,6 +2187,18 @@
       document.getElementById('filter-section').addEventListener('change', renderScoresTable);
       document.getElementById('btn-export-csv').addEventListener('click', exportScoresCSV);
       document.getElementById('btn-submit-cloud').addEventListener('click', () => submitToCloud(true));
+
+      // Interactive 3D Tilt on Left Element Hero Card
+      const heroCard = document.getElementById('hero-card');
+      heroCard.addEventListener('mousemove', (e) => {
+        const rect = heroCard.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width - 0.5;
+        const ny = (e.clientY - rect.top) / rect.height - 0.5;
+        heroCard.style.transform = `perspective(900px) rotateY(${nx * 7}deg) rotateX(${-ny * 7}deg)`;
+      });
+      heroCard.addEventListener('mouseleave', () => {
+        heroCard.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
+      });
 
       document.getElementById('btn-play').addEventListener('click', () => {
         const nameInput = document.getElementById('inp-name');
@@ -1731,20 +2238,20 @@
       document.getElementById('wrap-longhand').addEventListener('click', () => {
         SFX.pop();
         state.activeZone = 'longhand';
-        render();
+        render(true);
       });
 
       document.getElementById('wrap-noblegas').addEventListener('click', () => {
         SFX.pop();
         state.activeZone = 'noblegas';
-        render();
+        render(true);
       });
 
       document.getElementById('btn-clear').addEventListener('click', () => {
         SFX.unpop();
         if (state.activeZone === 'longhand') state.lhTiles = [];
         else state.ngTiles = [];
-        render();
+        render(true);
       });
 
       document.getElementById('btn-check').addEventListener('click', handleCheck);
