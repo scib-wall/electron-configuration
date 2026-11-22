@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORBITAL RUSH | Grade 8 Electron Configuration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --fluid: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      background-color: #050811;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* Animated Nebula Glows */
+    .nebula-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(99, 102, 241, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 82% 75%, rgba(6, 182, 212, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.06) 0%, transparent 60%);
+      animation: nebulaDrift 16s ease-in-out infinite alternate;
+    }
+
+    @keyframes nebulaDrift {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.08) translate(-1.5%, 1.5%); }
+    }
+
+    /* Glassmorphism Cards */
+    .glass-panel {
+      background: rgba(13, 19, 36, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .zone-active {
+      border-color: rgba(34, 211, 238, 0.85) !important;
+      background: rgba(8, 28, 48, 0.82) !important;
+      box-shadow: 0 0 25px rgba(34, 211, 238, 0.2), inset 0 0 12px rgba(34, 211, 238, 0.08);
+    }
+
+    /* Tactile Spring Buttons & Tiles */
+    .spring-tile {
+      transition: transform 0.24s var(--spring), box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5), 0 6px 14px rgba(0, 0, 0, 0.35);
+    }
+    .spring-tile:hover:not(:disabled) {
+      transform: translateY(-3px) scale(1.05);
+    }
+    .spring-tile:active:not(:disabled) {
+      transform: translateY(2px) scale(0.95);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .spring-pill {
+      transition: transform 0.22s var(--spring), background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .spring-pill:hover {
+      transform: translateY(-2px) scale(1.06);
+    }
+    .spring-pill:active {
+      transform: scale(0.93);
+    }
+
+    /* Dramatic Stage & Slot Animations */
+    @keyframes tilePopIn {
+      0% { transform: scale(0.4) translateY(10px); opacity: 0; }
+      70% { transform: scale(1.08) translateY(-2px); opacity: 1; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .tile-enter {
+      animation: tilePopIn 0.28s var(--spring) forwards;
+    }
+
+    @keyframes stageEnter {
+      0% { opacity: 0; transform: translateY(22px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .stage-enter {
+      animation: stageEnter 0.42s var(--fluid) forwards;
+    }
+
+    @keyframes errorShake {
+      0%, 100% { transform: translateX(0); }
+      18% { transform: translateX(-10px) rotate(-0.6deg); }
+      36% { transform: translateX(9px) rotate(0.6deg); }
+      54% { transform: translateX(-7px); }
+      72% { transform: translateX(6px); }
+      90% { transform: translateX(-3px); }
+    }
+    .shake-error {
+      animation: errorShake 0.42s ease-in-out;
+    }
+
+    @keyframes crimsonFlash {
+      0% { box-shadow: inset 0 0 0 0 rgba(244, 63, 94, 0); }
+      30% { box-shadow: inset 0 0 90px 25px rgba(244, 63, 94, 0.35); }
+      100% { box-shadow: inset 0 0 0 0 rgba(244, 63, 94, 0); }
+    }
+    .flash-crimson {
+      animation: crimsonFlash 0.5s ease-out;
+    }
+
+    @keyframes shockwaveRing {
+      0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.9; border-width: 6px; }
+      100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0; border-width: 1px; }
+    }
+    .shockwave {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      width: 180px;
+      height: 180px;
+      border-radius: 9999px;
+      border: 6px solid #22d3ee;
+      pointer-events: none;
+      z-index: 60;
+      animation: shockwaveRing 0.65s var(--fluid) forwards;
+    }
+
+    @keyframes floatPopup {
+      0% { transform: translate(-50%, 10px) scale(0.7); opacity: 0; }
+      25% { transform: translate(-50%, -12px) scale(1.12); opacity: 1; }
+      80% { transform: translate(-50%, -44px) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -62px) scale(0.95); opacity: 0; }
+    }
+    .score-popup {
+      position: fixed;
+      left: 50%;
+      top: 44%;
+      z-index: 70;
+      pointer-events: none;
+      animation: floatPopup 1.05s var(--fluid) forwards;
+    }
+
+    @keyframes nucleusPulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.75)); }
+      50% { transform: scale(1.08); filter: drop-shadow(0 0 16px rgba(129, 140, 248, 0.95)); }
+    }
+    .nucleus-glow {
+      transform-origin: center;
+      animation: nucleusPulse 2.4s ease-in-out infinite;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #receipt-card, #receipt-card * { visibility: visible; }
+      #receipt-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: 2px solid #0f172a !important;
+        box-shadow: none !important;
+      }
+      #receipt-card .print-dark { color: #0f172a !important; }
+      #receipt-card .print-sub { color: #475569 !important; }
+      #receipt-card .print-box { background: #f8fafc !important; border-color: #cbd5e1 !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col">
+
+  <!-- AMBIENT SPACE CANVAS & NEBULA -->
+  <div class="nebula-bg"></div>
+  <canvas id="bg-canvas" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+  <div id="screen-flash" class="fixed inset-0 z-40 pointer-events-none"></div>
+
+  <!-- TOP ARCADE HUD -->
+  <header class="relative z-20 border-b border-slate-800/80 bg-slate-950/75 backdrop-blur-xl">
+    <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
+      <!-- Brand + Player Tag -->
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-slate-950 font-black text-base shadow-lg shadow-cyan-500/20">
+          ⚛
+        </div>
+        <span class="font-black tracking-wider text-sm sm:text-base bg-gradient-to-r from-white via-cyan-200 to-indigo-300 bg-clip-text text-transparent">
+          ORBITAL RUSH
+        </span>
+        <span id="hud-player-tag" class="hidden md:inline-flex items-center px-2.5 py-0.5 rounded-lg bg-slate-900 border border-slate-700/80 text-[11px] font-mono font-bold text-slate-300">
+        </span>
+      </div>
+
+      <!-- Active Game HUD -->
+      <div id="hud-bar" class="hidden flex items-center gap-2 sm:gap-3">
+        <!-- Level Dots (1-5) -->
+        <div id="hud-dots" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800">
+        </div>
+
+        <!-- Streak -->
+        <div id="hud-streak-box" class="px-2.5 py-1 rounded-xl bg-amber-500/15 border border-amber-400/40 text-xs font-mono font-extrabold text-amber-300 transition-transform">
+          🔥 x<span id="hud-streak">1</span>
+        </div>
+
+        <!-- Hearts -->
+        <div id="hud-hearts" class="px-2 py-1 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs sm:text-sm tracking-tight">
+          ❤️❤️❤️
+        </div>
+
+        <!-- Score -->
+        <div class="px-3 py-1 rounded-xl bg-indigo-500/20 border border-indigo-400/40 text-xs sm:text-sm font-mono font-black text-cyan-300">
+          <span id="hud-score">0</span>
+        </div>
+
+        <!-- Mute Toggle -->
+        <button id="btn-mute" type="button" aria-label="Sound"
+          class="spring-pill w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 flex items-center justify-center text-sm cursor-pointer">
+          🔊
+        </button>
+      </div>
+
+      <!-- Scores Modal Trigger -->
+      <button id="btn-open-scores" type="button"
+        class="spring-pill px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 font-mono font-black text-xs tracking-wider uppercase cursor-pointer">
+        SCORES 🏆
+      </button>
+    </div>
+  </header>
+
+  <!-- SCREEN 1: ZERO-CLUTTER START SCREEN -->
+  <main id="screen-start" class="relative z-10 flex-1 flex items-center justify-center p-4">
+    <div class="glass-panel max-w-sm w-full rounded-3xl p-7 sm:p-8 text-center space-y-6 stage-enter">
+      <div class="space-y-2">
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-indigo-500/25 to-cyan-400/25 border border-cyan-400/40 flex items-center justify-center text-3xl shadow-inner">
+          ⚛️
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white">
+          ORBITAL <span class="text-cyan-400">RUSH</span>
+        </h1>
+      </div>
+
+      <div class="space-y-3">
+        <input id="inp-name" type="text" autocomplete="off" placeholder="NAME"
+          class="w-full px-4 py-3.5 rounded-2xl bg-slate-950/85 border border-slate-700/90 focus:border-cyan-400 focus:outline-none text-sm font-bold tracking-wider text-white placeholder-slate-500 text-center uppercase transition" />
+        <input id="inp-section" type="text" autocomplete="off" placeholder="SECTION"
+          class="w-full px-4 py-3.5 rounded-2xl bg-slate-950/85 border border-slate-700/90 focus:border-cyan-400 focus:outline-none text-sm font-bold tracking-wider text-white placeholder-slate-500 text-center uppercase transition" />
+      </div>
+
+      <button id="btn-play" type="button"
+        class="spring-tile w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 text-slate-950 font-black text-base tracking-widest uppercase shadow-xl shadow-cyan-500/25 cursor-pointer">
+        PLAY ▶
+      </button>
+    </div>
+  </main>
+
+  <!-- SCREEN 2: MAIN ARCADE STAGE -->
+  <main id="screen-game" class="hidden relative z-10 flex-1 max-w-5xl w-full mx-auto px-4 py-4 flex flex-col justify-center">
+    <div id="stage-wrapper" class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+
+      <!-- LEFT HERO CARD: LIVE BOHR ATOM VISUALIZER + ELEMENT BADGE (4 COLS) -->
+      <section class="lg:col-span-4 glass-panel rounded-3xl p-5 flex flex-col items-center justify-between gap-4">
+        <!-- Element Header -->
+        <div class="w-full flex items-center justify-between">
+          <span id="el-z-badge" class="px-3 py-1 rounded-xl bg-cyan-500/15 border border-cyan-400/40 font-mono font-black text-sm text-cyan-300">
+            Z = 9
+          </span>
+          <span id="el-lvl-tag" class="font-mono font-extrabold text-xs tracking-widest text-slate-400">
+            01 / 05
+          </span>
+        </div>
+
+        <!-- Live Interactive Bohr Shell Visualizer -->
+        <div class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center">
+          <canvas id="atom-canvas" class="w-full h-full"></canvas>
+          <!-- Center Element Symbol Overlay -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span id="el-symbol" class="text-3xl sm:text-4xl font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">F</span>
+            <span id="el-name" class="text-[10px] font-extrabold uppercase tracking-widest text-cyan-200 bg-slate-950/75 px-2 py-0.5 rounded-full border border-cyan-400/30 mt-0.5">
+              FLUORINE
+            </span>
+          </div>
+        </div>
+
+        <!-- Live Electron Counter Bar -->
+        <div class="w-full bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800/90 space-y-2">
+          <div class="flex items-center justify-between font-mono text-xs font-extrabold">
+            <span id="active-zone-label" class="text-cyan-400 tracking-wider">LONGHAND</span>
+            <span id="electron-counter" class="text-white">0 / 9 e⁻</span>
+          </div>
+          <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+            <div id="electron-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT WORKSPACE: TARGET ZONES, SHUFFLED TILES, PERIODICITY & CHECK (8 COLS) -->
+      <section class="lg:col-span-8 glass-panel rounded-3xl p-5 flex flex-col justify-between gap-3.5">
+
+        <!-- ZONE 1: LONGHAND -->
+        <div id="wrap-longhand" class="space-y-1 cursor-pointer">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-black tracking-widest uppercase text-cyan-300">LONGHAND</span>
+            <span id="lh-count-pill" class="font-mono text-[11px] font-bold text-slate-400">0 e⁻</span>
+          </div>
+          <div id="zone-longhand"
+            class="zone-active min-h-[54px] p-2.5 rounded-2xl bg-slate-950/80 border-2 border-slate-700/80 flex flex-wrap items-center gap-2 transition-all">
+          </div>
+        </div>
+
+        <!-- ZONE 2: NOBLE GAS -->
+        <div id="wrap-noblegas" class="space-y-1 cursor-pointer">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-black tracking-widest uppercase text-amber-300">NOBLE GAS</span>
+            <span id="ng-count-pill" class="font-mono text-[11px] font-bold text-slate-400">0 e⁻</span>
+          </div>
+          <div id="zone-noblegas"
+            class="min-h-[54px] p-2.5 rounded-2xl bg-slate-950/80 border-2 border-slate-700/80 flex flex-wrap items-center gap-2 transition-all">
+          </div>
+        </div>
+
+        <!-- SHUFFLED TILE BANK ("TILES") -->
+        <div class="bg-slate-950/65 p-3.5 rounded-2xl border border-slate-800/90 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-black tracking-widest uppercase text-slate-400">TILES</span>
+            <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold">
+              <span class="px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-300 border border-violet-500/40">s</span>
+              <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">p</span>
+              <span class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">d</span>
+              <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">[NG]</span>
+            </div>
+          </div>
+          <div id="tile-bank" class="flex flex-wrap items-center gap-2 pt-1"></div>
+        </div>
+
+        <!-- PERIODICITY TRIO: PERIOD, BLOCK, VALENCE -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="bg-slate-950/70 p-2.5 rounded-2xl border border-slate-800/90 space-y-1.5">
+            <div class="text-[10px] font-black tracking-widest uppercase text-slate-400 px-0.5">PERIOD</div>
+            <div id="pills-period" class="flex flex-wrap gap-1.5"></div>
+          </div>
+          <div class="bg-slate-950/70 p-2.5 rounded-2xl border border-slate-800/90 space-y-1.5">
+            <div class="text-[10px] font-black tracking-widest uppercase text-slate-400 px-0.5">BLOCK</div>
+            <div id="pills-block" class="flex flex-wrap gap-1.5"></div>
+          </div>
+          <div class="bg-slate-950/70 p-2.5 rounded-2xl border border-slate-800/90 space-y-1.5">
+            <div class="text-[10px] font-black tracking-widest uppercase text-slate-400 px-0.5">VALENCE</div>
+            <div id="pills-valence" class="flex flex-wrap gap-1"></div>
+          </div>
+        </div>
+
+        <!-- ACTION CONTROLS: CLEAR & CHECK -->
+        <div class="flex items-center gap-2.5 pt-1">
+          <button id="btn-clear" type="button"
+            class="spring-tile px-5 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-black text-xs tracking-widest uppercase cursor-pointer">
+            CLEAR
+          </button>
+          <button id="btn-check" type="button"
+            class="spring-tile flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 text-slate-950 font-black text-sm tracking-widest uppercase shadow-lg shadow-cyan-500/20 cursor-pointer">
+            CHECK ✓
+          </button>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- SCREEN 3: DIGITAL SUBMISSION RECEIPT -->
+  <main id="screen-receipt" class="hidden relative z-10 flex-1 flex items-center justify-center p-4">
+    <div id="receipt-card" class="glass-panel max-w-lg w-full rounded-3xl p-6 sm:p-8 space-y-5 stage-enter">
+
+      <!-- Rank & Player Header -->
+      <div class="flex items-center justify-between gap-4 border-b border-slate-800 pb-5">
+        <div class="space-y-1">
+          <div id="rcp-rank-label" class="font-mono font-black text-xs tracking-widest uppercase text-cyan-400">
+            RANK S
+          </div>
+          <h2 id="rcp-player" class="text-2xl sm:text-3xl font-black tracking-tight text-white print-dark">
+            PLAYER
+          </h2>
+          <div id="rcp-meta" class="font-mono font-bold text-xs text-slate-400 print-sub">
+            SECTION • DATE
+          </div>
+        </div>
+        <div id="rcp-grade-badge"
+          class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-amber-300 via-yellow-400 to-orange-500 flex items-center justify-center text-slate-950 font-black text-4xl sm:text-5xl shadow-xl print-box">
+          S
+        </div>
+      </div>
+
+      <!-- Score, Accuracy & Time Stats -->
+      <div class="grid grid-cols-3 gap-2.5 text-center font-mono">
+        <div class="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 print-box">
+          <div class="text-[10px] font-bold text-slate-400 uppercase print-sub">SCORE</div>
+          <div id="rcp-score" class="text-xl sm:text-2xl font-black text-cyan-300 mt-0.5 print-dark">0</div>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 print-box">
+          <div class="text-[10px] font-bold text-slate-400 uppercase print-sub">ACCURACY</div>
+          <div id="rcp-acc" class="text-xl sm:text-2xl font-black text-emerald-300 mt-0.5 print-dark">0%</div>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-950/80 border border-slate-800 print-box">
+          <div class="text-[10px] font-bold text-slate-400 uppercase print-sub">TIME</div>
+          <div id="rcp-time" class="text-xl sm:text-2xl font-black text-amber-300 mt-0.5 print-dark">00:00</div>
+        </div>
+      </div>
+
+      <!-- 5-Element Breakdown Chips -->
+      <div id="rcp-chips" class="grid grid-cols-5 gap-2"></div>
+
+      <!-- Verification Code & Cloud Status -->
+      <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-slate-500 pt-1">
+        <span>CODE: <strong id="rcp-code" class="text-slate-300 print-dark">OR-0000</strong></span>
+        <span id="cloud-status" class="px-2.5 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-300 font-extrabold">
+          SYNCING...
+        </span>
+      </div>
+
+      <!-- Minimal Action Buttons -->
+      <div class="no-print space-y-2.5 pt-1">
+        <div id="copy-toast" class="hidden text-center text-xs font-mono font-extrabold text-emerald-300 bg-emerald-500/15 border border-emerald-500/40 py-2 rounded-xl">
+          ✓ COPIED
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button id="btn-submit-cloud" type="button"
+            class="spring-tile py-3 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs tracking-wider uppercase cursor-pointer">
+            SUBMIT
+          </button>
+          <button id="btn-copy" type="button"
+            class="spring-tile py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs tracking-wider uppercase cursor-pointer">
+            COPY
+          </button>
+          <button id="btn-pdf" type="button"
+            class="spring-tile py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs tracking-wider uppercase cursor-pointer">
+            SAVE PDF
+          </button>
+          <button id="btn-replay" type="button"
+            class="spring-tile py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-black text-xs tracking-wider uppercase border border-slate-700 cursor-pointer">
+            REPLAY
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- LIVE CLOUD SCORES MODAL (TEACHER & CLASS LEADERBOARD) -->
+  <div id="scores-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-3xl max-h-[85vh] rounded-3xl p-5 sm:p-6 flex flex-col gap-4 stage-enter">
+      <!-- Modal Top Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
+        <div class="flex items-center gap-2.5">
+          <span class="text-lg font-black tracking-wider text-white">SCORES</span>
+          <span id="scores-count" class="px-2 py-0.5 rounded-lg bg-cyan-500/15 border border-cyan-400/40 font-mono text-xs font-extrabold text-cyan-300">0</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="filter-section" aria-label="Section"
+            class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-slate-200 uppercase focus:outline-none focus:border-cyan-400">
+            <option value="ALL">ALL SECTIONS</option>
+          </select>
+          <button id="btn-export-csv" type="button"
+            class="spring-pill px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-black text-xs tracking-wider uppercase cursor-pointer">
+            EXPORT CSV
+          </button>
+          <button id="btn-close-scores" type="button"
+            class="spring-pill w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-black text-sm flex items-center justify-center cursor-pointer">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Scores Table Container -->
+      <div class="overflow-y-auto flex-1 rounded-2xl border border-slate-800 bg-slate-950/75">
+        <table class="w-full text-left border-collapse font-mono text-xs">
+          <thead class="bg-slate-900/95 text-slate-400 uppercase sticky top-0">
+            <tr>
+              <th class="py-2.5 px-3">NAME</th>
+              <th class="py-2.5 px-3">SECTION</th>
+              <th class="py-2.5 px-3">RANK</th>
+              <th class="py-2.5 px-3">SCORE</th>
+              <th class="py-2.5 px-3">ACC</th>
+              <th class="py-2.5 px-3">TIME</th>
+              <th class="py-2.5 px-3">CODE</th>
+            </tr>
+          </thead>
+          <tbody id="scores-tbody" class="divide-y divide-slate-800/80 text-slate-200">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      orderBy,
+      limit,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    /**
+     * 0. FIREBASE INITIALIZATION
+     */
+    const firebaseConfig = {
+      apiKey: "AIzaSyBv7z5iO2iWMAmxEkimnJ4Q0mrvhRRNEac",
+      authDomain: "electron-configuration-d7cd1.firebaseapp.com",
+      projectId: "electron-configuration-d7cd1",
+      storageBucket: "electron-configuration-d7cd1.firebasestorage.app",
+      messagingSenderId: "166332846795",
+      appId: "1:166332846795:web:fd1288c2669a65b3c7014e",
+      measurementId: "G-0C57L8FJPM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    try {
+      getAnalytics(app);
+    } catch (_) {
+      // Analytics safely ignored if blocked by browser privacy settings
+    }
+
+    /**
+     * 1. WEB AUDIO SYNTHESIZER (Tactile Clicks, Arpeggio Combos, Low Buzz)
+     */
+    const SFX = (() => {
+      let ctx = null;
+      let muted = false;
+
+      function ensureCtx() {
+        if (!ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) ctx = new AC();
+        }
+        if (ctx && ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      }
+
+      function tone(freq, type, dur, delay = 0, vol = 0.12) {
+        if (muted) return;
+        const c = ensureCtx();
+        if (!c) return;
+        const osc = c.createOscillator();
+        const g = c.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, c.currentTime + delay);
+        g.gain.setValueAtTime(vol, c.currentTime + delay);
+        g.gain.exponentialRampToValueAtTime(0.0008, c.currentTime + delay + dur);
+        osc.connect(g);
+        g.connect(c.destination);
+        osc.start(c.currentTime + delay);
+        osc.stop(c.currentTime + delay + dur);
+      }
+
+      return {
+        toggleMute() {
+          muted = !muted;
+          return muted;
+        },
+        pop() {
+          tone(580, 'sine', 0.065, 0, 0.09);
+        },
+        unpop() {
+          tone(360, 'triangle', 0.07, 0, 0.08);
+        },
+        buzz() {
+          tone(155, 'sawtooth', 0.18, 0, 0.12);
+          tone(120, 'sawtooth', 0.24, 0.11, 0.12);
+        },
+        clear(streak = 1) {
+          const base = 523.25 * (1 + Math.min(streak - 1, 4) * 0.06);
+          tone(base, 'triangle', 0.13, 0, 0.14);
+          tone(base * 1.25, 'triangle', 0.13, 0.08, 0.14);
+          tone(base * 1.5, 'triangle', 0.24, 0.16, 0.16);
+        },
+        victory() {
+          [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+            tone(f, 'triangle', 0.28, i * 0.09, 0.15);
+          });
+        }
+      };
+    })();
+
+    /**
+     * 2. AMBIENT DEEP-SPACE STAR & CONFETTI PARTICLE CANVAS
+     */
+    const ParticleEngine = (() => {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = 0, h = 0;
+      const stars = [];
+      const bursts = [];
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 55; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.6 + 0.4,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          alpha: Math.random() * 0.6 + 0.2
+        });
+      }
+
+      function spawnConfetti(cx = w / 2, cy = h / 2, count = 48) {
+        const colors = ['#22d3ee', '#fbbf24', '#34d399', '#a78bfa', '#f43f5e'];
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 7 + 2.5;
+          bursts.push({
+            x: cx,
+            y: cy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 2,
+            size: Math.random() * 6 + 3,
+            color: colors[i % colors.length],
+            life: 1,
+            decay: Math.random() * 0.018 + 0.014,
+            rot: Math.random() * Math.PI
+          });
+        }
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Ambient Stars
+        for (const s of stars) {
+          s.x += s.vx;
+          s.y += s.vy;
+          if (s.x < 0) s.x = w;
+          if (s.x > w) s.x = 0;
+          if (s.y < 0) s.y = h;
+          if (s.y > h) s.y = 0;
+          ctx.fillStyle = `rgba(186, 230, 253, ${s.alpha})`;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Confetti Bursts
+        for (let i = bursts.length - 1; i >= 0; i--) {
+          const p = bursts[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.16; // Gravity
+          p.vx *= 0.98;
+          p.rot += 0.12;
+          p.life -= p.decay;
+          if (p.life <= 0) {
+            bursts.splice(i, 1);
+            continue;
+          }
+          ctx.save();
+          ctx.globalAlpha = p.life;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          ctx.restore();
+        }
+
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      return { spawnConfetti };
+    })();
+
+    /**
+     * 3. LIVE INTERACTIVE BOHR SHELL VISUALIZER (Concentric Shells n=1,2,3,4)
+     */
+    const BohrVisualizer = (() => {
+      const canvas = document.getElementById('atom-canvas');
+      const ctx = canvas.getContext('2d');
+      let targetShellCounts = [0, 0, 0, 0];
+      let angle = 0;
+
+      // Shell mapping for each orbital tile
+      const SHELL_MAP = {
+        '[He]': [2, 0, 0, 0],
+        '[Ne]': [2, 8, 0, 0],
+        '[Ar]': [2, 8, 8, 0],
+        '[Kr]': [2, 8, 18, 8],
+        '1s²': [2, 0, 0, 0],
+        '2s²': [0, 2, 0, 0],
+        '2p⁵': [0, 5, 0, 0],
+        '2p⁶': [0, 6, 0, 0],
+        '2p⁷': [0, 7, 0, 0],
+        '3s¹': [0, 0, 1, 0],
+        '3s²': [0, 0, 2, 0],
+        '3p¹': [0, 0, 1, 0],
+        '3p³': [0, 0, 3, 0],
+        '3p⁶': [0, 0, 6, 0],
+        '3d¹': [0, 0, 1, 0],
+        '3d²': [0, 0, 2, 0],
+        '3d⁶': [0, 0, 6, 0],
+        '3d⁸': [0, 0, 8, 0],
+        '4s¹': [0, 0, 0, 1],
+        '4s²': [0, 0, 0, 2],
+        '4p¹': [0, 0, 0, 1]
+      };
+
+      function updateFromTiles(tiles) {
+        const counts = [0, 0, 0, 0];
+        for (const t of tiles) {
+          const add = SHELL_MAP[t] || [0, 0, 0, 0];
+          for (let i = 0; i < 4; i++) counts[i] += add[i];
+        }
+        targetShellCounts = counts;
+      }
+
+      function render() {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width > 0 && (canvas.width !== Math.round(rect.width * dpr))) {
+          canvas.width = Math.round(rect.width * dpr);
+          canvas.height = Math.round(rect.height * dpr);
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const maxR = Math.min(cx, cy) - 10 * dpr;
+
+        ctx.clearRect(0, 0, w, h);
+        angle += 0.016;
+
+        // Concentric Shell Rings (n = 1, 2, 3, 4)
+        const radii = [maxR * 0.44, maxR * 0.62, maxR * 0.80, maxR * 0.98];
+        const ringColors = ['#a78bfa', '#34d399', '#fb7185', '#38bdf8'];
+
+        // Nucleus Aura
+        const grad = ctx.createRadialGradient(cx, cy, 4 * dpr, cx, cy, maxR * 0.34);
+        grad.addColorStop(0, 'rgba(99, 102, 241, 0.55)');
+        grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR * 0.34, 0, Math.PI * 2);
+        ctx.fill();
+
+        radii.forEach((r, sIdx) => {
+          const count = targetShellCounts[sIdx];
+          ctx.strokeStyle = count > 0 ? 'rgba(148, 163, 184, 0.34)' : 'rgba(148, 163, 184, 0.11)';
+          ctx.lineWidth = (count > 0 ? 1.5 : 1) * dpr;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Orbiting Electrons
+          const dir = sIdx % 2 === 0 ? 1 : -1;
+          const speed = 1 - sIdx * 0.16;
+          for (let e = 0; e < count; e++) {
+            const theta = angle * speed * dir + (e * Math.PI * 2) / count;
+            const ex = cx + Math.cos(theta) * r;
+            const ey = cy + Math.sin(theta) * r;
+
+            ctx.shadowBlur = 8 * dpr;
+            ctx.shadowColor = ringColors[sIdx];
+            ctx.fillStyle = ringColors[sIdx];
+            ctx.beginPath();
+            ctx.arc(ex, ey, 3.2 * dpr, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+
+      return { updateFromTiles };
+    })();
+
+    /**
+     * 4. EXACTLY 5 OBJECTIVE LEVELS (F, Al, Ca, Sc, Fe)
+     */
+    const LEVELS = [
+      {
+        symbol: 'F',
+        name: 'FLUORINE',
+        z: 9,
+        longhand: ['1s²', '2s²', '2p⁵'],
+        nobleGas: ['[He]', '2s²', '2p⁵'],
+        period: '2',
+        block: 'p',
+        valence: '7',
+        bank: ['1s²', '2s²', '2p⁵', '2p⁷', '3s¹', '[He]', '[Ne]']
+      },
+      {
+        symbol: 'Al',
+        name: 'ALUMINUM',
+        z: 13,
+        longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p¹'],
+        nobleGas: ['[Ne]', '3s²', '3p¹'],
+        period: '3',
+        block: 'p',
+        valence: '3',
+        bank: ['1s²', '2s²', '2p⁶', '3s²', '3p¹', '3p³', '2p⁷', '[He]', '[Ne]', '[Ar]']
+      },
+      {
+        symbol: 'Ca',
+        name: 'CALCIUM',
+        z: 20,
+        longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²'],
+        nobleGas: ['[Ar]', '4s²'],
+        period: '4',
+        block: 's',
+        valence: '2',
+        bank: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d²', '4s¹', '[Ne]', '[Ar]']
+      },
+      {
+        symbol: 'Sc',
+        name: 'SCANDIUM',
+        z: 21,
+        longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d¹'],
+        nobleGas: ['[Ar]', '4s²', '3d¹'],
+        period: '4',
+        block: 'd',
+        valence: '3',
+        bank: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d¹', '3d²', '4p¹', '[Ne]', '[Ar]']
+      },
+      {
+        symbol: 'Fe',
+        name: 'IRON',
+        z: 26,
+        longhand: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d⁶'],
+        nobleGas: ['[Ar]', '4s²', '3d⁶'],
+        period: '4',
+        block: 'd',
+        valence: '8',
+        bank: ['1s²', '2s²', '2p⁶', '3s²', '3p⁶', '4s²', '3d⁶', '3d⁸', '3p³', '[Ar]', '[Kr]']
+      }
+    ];
+
+    const ELECTRON_VALUES = {
+      '[He]': 2, '[Ne]': 10, '[Ar]': 18, '[Kr]': 36,
+      '1s²': 2, '2s²': 2, '2p⁵': 5, '2p⁶': 6, '2p⁷': 7,
+      '3s¹': 1, '3s²': 2, '3p¹': 1, '3p³': 3, '3p⁶': 6,
+      '4s¹': 1, '4s²': 2, '3d¹': 1, '3d²': 2, '3d⁶': 6, '3d⁸': 8,
+      '4p¹': 1
+    };
+
+    const state = {
+      player: '',
+      section: '',
+      idx: 0,
+      score: 0,
+      streak: 1,
+      hearts: 3,
+      checks: 0,
+      hits: 0,
+      startTime: 0,
+      activeZone: 'longhand', // 'longhand' | 'noblegas'
+      lhTiles: [],
+      ngTiles: [],
+      selPeriod: '',
+      results: [], // { symbol, passed }
+      lastPayload: null,
+      cloudSubmitted: false,
+      cachedRows: []
+    };
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function sumE(tiles) {
+      return tiles.reduce((sum, t) => sum + (ELECTRON_VALUES[t] || 0), 0);
+    }
+
+    function tileStyle(t) {
+      if (t.startsWith('[')) return 'bg-amber-500/20 text-amber-200 border-amber-400/75 hover:bg-amber-500/30';
+      if (t.includes('s')) return 'bg-violet-500/20 text-violet-200 border-violet-400/75 hover:bg-violet-500/30';
+      if (t.includes('p')) return 'bg-emerald-500/20 text-emerald-200 border-emerald-400/75 hover:bg-emerald-500/30';
+      if (t.includes('d')) return 'bg-rose-500/20 text-rose-200 border-rose-400/75 hover:bg-rose-500/30';
+      return 'bg-slate-800 text-white border-slate-600';
+    }
+
+    function loadLevel(index) {
+      state.idx = index;
+      state.activeZone = 'longhand';
+      state.lhTiles = [];
+      state.ngTiles = [];
+      state.selPeriod = '';
+      state.selBlock = '';
+      state.selValence = '';
+      state.shuffledBank = shuffle(LEVELS[index].bank);
+
+      const wrapper = document.getElementById('stage-wrapper');
+      wrapper.classList.remove('stage-enter');
+      void wrapper.offsetWidth;
+      wrapper.classList.add('stage-enter');
+
+      render();
+    }
+
+    function renderHUD() {
+      // Level Dots (1-5)
+      const dotsEl = document.getElementById('hud-dots');
+      dotsEl.innerHTML = '';
+      LEVELS.forEach((_, i) => {
+        const dot = document.createElement('span');
+        let cls = 'w-2.5 h-2.5 rounded-full transition-all duration-300 ';
+        if (i < state.idx) {
+          const passed = state.results[i]?.passed;
+          cls += passed ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-rose-500';
+        } else if (i === state.idx) {
+          cls += 'w-5 bg-cyan-400 shadow-[0_0_10px_#22d3ee]';
+        } else {
+          cls += 'bg-slate-700';
+        }
+        dot.className = cls;
+        dotsEl.appendChild(dot);
+      });
+
+      document.getElementById('hud-streak').textContent = state.streak;
+      document.getElementById('hud-score').textContent = state.score;
+
+      const heartsStr = '❤️'.repeat(Math.max(0, state.hearts)) + '🖤'.repeat(Math.max(0, 3 - state.hearts));
+      document.getElementById('hud-hearts').textContent = heartsStr;
+    }
+
+    function render() {
+      const lvl = LEVELS[state.idx];
+      renderHUD();
+
+      // Left Hero Card
+      document.getElementById('el-z-badge').textContent = `Z = ${lvl.z}`;
+      document.getElementById('el-lvl-tag').textContent = `0${state.idx + 1} / 05`;
+      document.getElementById('el-symbol').textContent = lvl.symbol;
+      document.getElementById('el-name').textContent = lvl.name;
+
+      const lhSum = sumE(state.lhTiles);
+      const ngSum = sumE(state.ngTiles);
+      document.getElementById('lh-count-pill').textContent = `${lhSum} e⁻`;
+      document.getElementById('ng-count-pill').textContent = `${ngSum} e⁻`;
+
+      // Active Zone Electron Bar + Bohr Atom Visualizer Sync
+      const activeTiles = state.activeZone === 'longhand' ? state.lhTiles : state.ngTiles;
+      const activeSum = state.activeZone === 'longhand' ? lhSum : ngSum;
+      BohrVisualizer.updateFromTiles(activeTiles);
+
+      const zoneLabel = document.getElementById('active-zone-label');
+      zoneLabel.textContent = state.activeZone === 'longhand' ? 'LONGHAND' : 'NOBLE GAS';
+      zoneLabel.className = state.activeZone === 'longhand'
+        ? 'text-cyan-400 tracking-wider'
+        : 'text-amber-300 tracking-wider';
+
+      const counterEl = document.getElementById('electron-counter');
+      const barEl = document.getElementById('electron-bar');
+      counterEl.textContent = `${activeSum} / ${lvl.z} e⁻`;
+      const pct = Math.min(100, Math.round((activeSum / lvl.z) * 100));
+      barEl.style.width = `${pct}%`;
+
+      if (activeSum > lvl.z) {
+        counterEl.className = 'text-rose-400 font-black';
+        barEl.className = 'h-full rounded-full bg-rose-500 transition-all duration-300';
+      } else if (activeSum === lvl.z) {
+        counterEl.className = 'text-emerald-400 font-black';
+        barEl.className = 'h-full rounded-full bg-emerald-400 transition-all duration-300';
+      } else {
+        counterEl.className = 'text-white';
+        barEl.className = 'h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all duration-300';
+      }
+
+      // Zone Focus Highlights
+      const zLh = document.getElementById('zone-longhand');
+      const zNg = document.getElementById('zone-noblegas');
+      zLh.classList.toggle('zone-active', state.activeZone === 'longhand');
+      zNg.classList.toggle('zone-active', state.activeZone === 'noblegas');
+
+      renderZoneSlots(zLh, state.lhTiles, 'longhand');
+      renderZoneSlots(zNg, state.ngTiles, 'noblegas');
+
+      // Shuffled Tile Bank
+      const bankEl = document.getElementById('tile-bank');
+      bankEl.innerHTML = '';
+      state.shuffledBank.forEach(tile => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `spring-tile px-3.5 py-2 rounded-xl border-2 font-mono font-extrabold text-sm cursor-pointer ${tileStyle(tile)}`;
+        btn.textContent = tile;
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          addTileToActiveZone(tile);
+        });
+        bankEl.appendChild(btn);
+      });
+
+      // Periodicity Pills
+      renderPillRow('pills-period', ['1', '2', '3', '4'], state.selPeriod, (val) => {
+        state.selPeriod = val;
+      });
+      renderPillRow('pills-block', ['s', 'p', 'd', 'f'], state.selBlock, (val) => {
+        state.selBlock = val;
+      });
+      renderPillRow('pills-valence', ['1', '2', '3', '4', '5', '6', '7', '8'], state.selValence, (val) => {
+        state.selValence = val;
+      });
+    }
+
+    function renderZoneSlots(container, tiles, zoneName) {
+      container.innerHTML = '';
+      tiles.forEach((tile, idx) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = `tile-enter spring-tile px-3 py-1.5 rounded-xl border-2 font-mono font-extrabold text-xs sm:text-sm cursor-pointer ${tileStyle(tile)}`;
+        chip.textContent = tile;
+        chip.addEventListener('click', (e) => {
+          e.stopPropagation();
+          SFX.unpop();
+          state.activeZone = zoneName;
+          if (zoneName === 'longhand') state.lhTiles.splice(idx, 1);
+          else state.ngTiles.splice(idx, 1);
+          render();
+        });
+        container.appendChild(chip);
+      });
+    }
+
+    function renderPillRow(containerId, options, selectedVal, onSelect) {
+      const el = document.getElementById(containerId);
+      el.innerHTML = '';
+      options.forEach(opt => {
+        const active = selectedVal === opt;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `spring-pill px-2.5 py-1 rounded-lg font-mono font-extrabold text-xs border cursor-pointer ${
+          active
+            ? 'bg-cyan-400 text-slate-950 border-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.45)]'
+            : 'bg-slate-950/90 text-slate-300 border-slate-700/90 hover:border-slate-500'
+        }`;
+        btn.textContent = opt;
+        btn.addEventListener('click', () => {
+          SFX.pop();
+          onSelect(opt);
+          render();
+        });
+        el.appendChild(btn);
+      });
+    }
+
+    function addTileToActiveZone(tile) {
+      SFX.pop();
+      const target = state.activeZone === 'longhand' ? state.lhTiles : state.ngTiles;
+      if (!target.includes(tile)) {
+        target.push(tile);
+      }
+      // Auto-advance focus to NOBLE GAS once LONGHAND hits target Z
+      const lvl = LEVELS[state.idx];
+      if (state.activeZone === 'longhand' && sumE(state.lhTiles) === lvl.z && state.ngTiles.length === 0) {
+        state.activeZone = 'noblegas';
+      }
+      render();
+    }
+
+    function triggerCelebration(points, streak) {
+      // Shockwave Ring
+      const ring = document.createElement('div');
+      ring.className = 'shockwave';
+      document.body.appendChild(ring);
+      setTimeout(() => ring.remove(), 700);
+
+      // Floating Score Popup
+      const pop = document.createElement('div');
+      pop.className = 'score-popup text-center';
+      pop.innerHTML = `
+        <div class="font-mono font-black text-3xl sm:text-4xl text-cyan-300 drop-shadow-[0_4px_16px_rgba(34,211,238,0.75)]">+${points}</div>
+        ${streak > 1 ? `<div class="font-mono font-black text-sm text-amber-300 tracking-widest">STREAK x${streak}</div>` : ''}
+      `;
+      document.body.appendChild(pop);
+      setTimeout(() => pop.remove(), 1100);
+
+      // Confetti Burst
+      ParticleEngine.spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.45, 55);
+    }
+
+    function triggerErrorFeedback() {
+      SFX.buzz();
+      const flash = document.getElementById('screen-flash');
+      flash.classList.remove('flash-crimson');
+      void flash.offsetWidth;
+      flash.classList.add('flash-crimson');
+
+      const wrapper = document.getElementById('stage-wrapper');
+      wrapper.classList.remove('shake-error');
+      void wrapper.offsetWidth;
+      wrapper.classList.add('shake-error');
+    }
+
+    function handleCheck() {
+      const lvl = LEVELS[state.idx];
+      state.checks++;
+
+      const lhOk = JSON.stringify(state.lhTiles) === JSON.stringify(lvl.longhand);
+      const ngOk = JSON.stringify(state.ngTiles) === JSON.stringify(lvl.nobleGas);
+      const perOk = state.selPeriod === lvl.period && state.selBlock === lvl.block && state.selValence === lvl.valence;
+
+      if (lhOk && ngOk && perOk) {
+        state.hits++;
+        const earned = 100 * state.streak;
+        state.score += earned;
+        state.results.push({ symbol: lvl.symbol, passed: true });
+        SFX.clear(state.streak);
+        triggerCelebration(earned, state.streak);
+        state.streak++;
+        renderHUD();
+
+        setTimeout(() => {
+          if (state.idx < LEVELS.length - 1) {
+            loadLevel(state.idx + 1);
+          } else {
+            finishGame();
+          }
+        }, 720);
+      } else {
+        triggerErrorFeedback();
+        state.streak = 1;
+        state.hearts--;
+        renderHUD();
+
+        if (state.hearts <= 0) {
+          state.results.push({ symbol: lvl.symbol, passed: false });
+          setTimeout(() => {
+            if (state.idx < LEVELS.length - 1) {
+              state.hearts = 3;
+              loadLevel(state.idx + 1);
+            } else {
+              finishGame();
+            }
+          }, 600);
+        }
+      }
+    }
+
+    function animateCounter(el, target, suffix = '', duration = 850) {
+      const start = performance.now();
+      function step(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = `${Math.round(target * eased)}${suffix}`;
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function finishGame() {
+      SFX.victory();
+      ParticleEngine.spawnConfetti(window.innerWidth / 2, window.innerHeight * 0.35, 85);
+
+      document.getElementById('screen-game').classList.add('hidden');
+      document.getElementById('hud-bar').classList.add('hidden');
+      document.getElementById('screen-receipt').classList.remove('hidden');
+
+      const elapsedSec = Math.max(1, Math.round((Date.now() - state.startTime) / 1000));
+      const mins = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+      const secs = String(elapsedSec % 60).padStart(2, '0');
+      const accuracy = state.checks > 0 ? Math.round((state.hits / state.checks) * 100) : 0;
+
+      // Rank S / A / B / C
+      let grade = 'C';
+      let badgeGrad = 'from-slate-400 to-slate-600';
+      if (accuracy >= 90 && state.hits === 5) {
+        grade = 'S';
+        badgeGrad = 'from-amber-300 via-yellow-400 to-orange-500';
+      } else if (accuracy >= 75 && state.hits >= 4) {
+        grade = 'A';
+        badgeGrad = 'from-emerald-300 to-teal-500';
+      } else if (accuracy >= 50) {
+        grade = 'B';
+        badgeGrad = 'from-cyan-300 to-indigo-500';
+      }
+
+      document.getElementById('rcp-rank-label').textContent = `RANK ${grade}`;
+      const badgeEl = document.getElementById('rcp-grade-badge');
+      badgeEl.textContent = grade;
+      badgeEl.className = `w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br ${badgeGrad} flex items-center justify-center text-slate-950 font-black text-4xl sm:text-5xl shadow-xl print-box`;
+
+      document.getElementById('rcp-player').textContent = state.player;
+      document.getElementById('rcp-meta').textContent = `${state.section} • ${new Date().toLocaleDateString()}`;
+      document.getElementById('rcp-time').textContent = `${mins}:${secs}`;
+
+      animateCounter(document.getElementById('rcp-score'), state.score);
+      animateCounter(document.getElementById('rcp-acc'), accuracy, '%');
+
+      // 5-Level Chips
+      const chipsEl = document.getElementById('rcp-chips');
+      chipsEl.innerHTML = '';
+      LEVELS.forEach((lvl, i) => {
+        const passed = state.results[i]?.passed;
+        const chip = document.createElement('div');
+        chip.className = `p-2.5 rounded-2xl border text-center font-mono print-box ${
+          passed
+            ? 'bg-emerald-500/15 border-emerald-400/50 text-emerald-300 print-dark'
+            : 'bg-rose-500/15 border-rose-500/40 text-rose-300 print-dark'
+        }`;
+        chip.innerHTML = `
+          <div class="text-sm font-black">${lvl.symbol}</div>
+          <div class="text-xs font-extrabold mt-0.5">${passed ? '✓' : '✗'}</div>
+        `;
+        chipsEl.appendChild(chip);
+      });
+
+      // Verification Hash
+      const raw = `${state.player}|${state.section}|${state.score}|${accuracy}`;
+      let hash = 0;
+      for (let i = 0; i < raw.length; i++) {
+        hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+        hash |= 0;
+      }
+      const code = `OR-${grade}${state.score}-${Math.abs(hash % 8999) + 1000}`;
+      document.getElementById('rcp-code').textContent = code;
+
+      state.cloudSubmitted = false;
+      state.lastPayload = {
+        name: state.player,
+        section: state.section,
+        score: state.score,
+        accuracy,
+        rank: grade,
+        timeSeconds: elapsedSec,
+        timeFormatted: `${mins}:${secs}`,
+        verifyCode: code,
+        levelBreakdown: LEVELS.map((l, i) => ({
+          symbol: l.symbol,
+          passed: Boolean(state.results[i]?.passed)
+        }))
+      };
+
+      submitToCloud(false);
+    }
+
+    async function submitToCloud(isManual = false) {
+      if (!state.lastPayload) return;
+      if (state.cloudSubmitted && !isManual) return;
+
+      const statusEl = document.getElementById('cloud-status');
+      const submitBtn = document.getElementById('btn-submit-cloud');
+      statusEl.textContent = 'SYNCING...';
+      statusEl.className = 'px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 font-extrabold';
+      submitBtn.disabled = true;
+
+      try {
+        await addDoc(collection(db, 'submissions'), {
+          ...state.lastPayload,
+          createdAt: serverTimestamp()
+        });
+        state.cloudSubmitted = true;
+        statusEl.textContent = '✓ SAVED TO CLOUD';
+        statusEl.className = 'px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/50 text-emerald-300 font-extrabold';
+        submitBtn.textContent = 'SUBMITTED ✓';
+        if (isManual) SFX.clear(2);
+      } catch (err) {
+        console.error('Firestore submission error:', err);
+        statusEl.textContent = '⚠ OFFLINE MODE';
+        statusEl.className = 'px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/50 text-amber-300 font-extrabold';
+        submitBtn.textContent = 'RETRY';
+        submitBtn.disabled = false;
+        if (isManual) SFX.buzz();
+      }
+    }
+
+    async function openScoresModal() {
+      SFX.pop();
+      const modal = document.getElementById('scores-modal');
+      const tbody = document.getElementById('scores-tbody');
+      const sectionSelect = document.getElementById('filter-section');
+      modal.classList.remove('hidden');
+
+      tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">LOADING...</td></tr>`;
+
+      try {
+        const q = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'), limit(250));
+        const snap = await getDocs(q);
+        const rows = [];
+        const sections = new Set();
+
+        snap.forEach(docSnap => {
+          const d = docSnap.data();
+          rows.push(d);
+          if (d.section) sections.add(String(d.section).toUpperCase());
+        });
+
+        state.cachedRows = rows;
+
+        const prevFilter = sectionSelect.value;
+        sectionSelect.innerHTML = `<option value="ALL">ALL SECTIONS</option>`;
+        Array.from(sections).sort().forEach(sec => {
+          const opt = document.createElement('option');
+          opt.value = sec;
+          opt.textContent = sec;
+          sectionSelect.appendChild(opt);
+        });
+        if (Array.from(sections).includes(prevFilter)) {
+          sectionSelect.value = prevFilter;
+        }
+
+        renderScoresTable();
+      } catch (err) {
+        console.error('Firestore fetch error:', err);
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-amber-300">OFFLINE MODE — CHECK FIRESTORE RULES</td></tr>`;
+      }
+    }
+
+    function renderScoresTable() {
+      const tbody = document.getElementById('scores-tbody');
+      const filter = document.getElementById('filter-section').value;
+      const filtered = filter === 'ALL'
+        ? state.cachedRows
+        : state.cachedRows.filter(r => String(r.section).toUpperCase() === filter);
+
+      document.getElementById('scores-count').textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500">NO SCORES YET</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => {
+        const mins = String(Math.floor((r.timeSeconds || 0) / 60)).padStart(2, '0');
+        const secs = String((r.timeSeconds || 0) % 60).padStart(2, '0');
+        const timeStr = r.timeFormatted || `${mins}:${secs}`;
+        const rankColor = r.rank === 'S' ? 'text-amber-300' : r.rank === 'A' ? 'text-emerald-300' : 'text-cyan-300';
+        return `
+          <tr class="hover:bg-slate-900/60 transition">
+            <td class="py-2.5 px-3 font-extrabold text-white">${escapeHtml(r.name || '-')}</td>
+            <td class="py-2.5 px-3 text-slate-300">${escapeHtml(r.section || '-')}</td>
+            <td class="py-2.5 px-3 font-black ${rankColor}">${escapeHtml(r.rank || '-')}</td>
+            <td class="py-2.5 px-3 font-black text-cyan-300">${Number(r.score || 0)}</td>
+            <td class="py-2.5 px-3 text-emerald-300">${Number(r.accuracy || 0)}%</td>
+            <td class="py-2.5 px-3 text-slate-400">${escapeHtml(timeStr)}</td>
+            <td class="py-2.5 px-3 text-slate-400">${escapeHtml(r.verifyCode || '-')}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function exportScoresCSV() {
+      const filter = document.getElementById('filter-section').value;
+      const rows = filter === 'ALL'
+        ? state.cachedRows
+        : state.cachedRows.filter(r => String(r.section).toUpperCase() === filter);
+
+      if (!rows.length) {
+        SFX.buzz();
+        return;
+      }
+
+      SFX.pop();
+      const headers = ['NAME', 'SECTION', 'RANK', 'SCORE', 'ACCURACY', 'TIME_SECONDS', 'VERIFY_CODE'];
+      const csvLines = [
+        headers.join(','),
+        ...rows.map(r => [
+          `"${String(r.name || '').replace(/"/g, '""')}"`,
+          `"${String(r.section || '').replace(/"/g, '""')}"`,
+          `"${String(r.rank || '')}"`,
+          Number(r.score || 0),
+          Number(r.accuracy || 0),
+          Number(r.timeSeconds || 0),
+          `"${String(r.verifyCode || '')}"`
+        ].join(','))
+      ];
+
+      const blob = new Blob([csvLines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `orbital-rush-scores-${filter.toLowerCase()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Event Bindings
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('btn-open-scores').addEventListener('click', openScoresModal);
+      document.getElementById('btn-close-scores').addEventListener('click', () => {
+        SFX.unpop();
+        document.getElementById('scores-modal').classList.add('hidden');
+      });
+      document.getElementById('filter-section').addEventListener('change', renderScoresTable);
+      document.getElementById('btn-export-csv').addEventListener('click', exportScoresCSV);
+      document.getElementById('btn-submit-cloud').addEventListener('click', () => submitToCloud(true));
+
+      document.getElementById('btn-play').addEventListener('click', () => {
+        const nameInput = document.getElementById('inp-name');
+        const secInput = document.getElementById('inp-section');
+        const nameVal = nameInput.value.trim().toUpperCase();
+        const secVal = secInput.value.trim().toUpperCase();
+
+        if (!nameVal || !secVal) {
+          SFX.buzz();
+          if (!nameVal) nameInput.classList.add('border-rose-500');
+          if (!secVal) secInput.classList.add('border-rose-500');
+          return;
+        }
+
+        SFX.clear(1);
+        state.player = nameVal;
+        state.section = secVal;
+        state.score = 0;
+        state.streak = 1;
+        state.hearts = 3;
+        state.checks = 0;
+        state.hits = 0;
+        state.results = [];
+        state.startTime = Date.now();
+
+        const tag = document.getElementById('hud-player-tag');
+        tag.textContent = `${nameVal} • ${secVal}`;
+        tag.classList.remove('hidden');
+
+        document.getElementById('screen-start').classList.add('hidden');
+        document.getElementById('hud-bar').classList.remove('hidden');
+        document.getElementById('screen-game').classList.remove('hidden');
+        loadLevel(0);
+      });
+
+      document.getElementById('wrap-longhand').addEventListener('click', () => {
+        SFX.pop();
+        state.activeZone = 'longhand';
+        render();
+      });
+
+      document.getElementById('wrap-noblegas').addEventListener('click', () => {
+        SFX.pop();
+        state.activeZone = 'noblegas';
+        render();
+      });
+
+      document.getElementById('btn-clear').addEventListener('click', () => {
+        SFX.unpop();
+        if (state.activeZone === 'longhand') state.lhTiles = [];
+        else state.ngTiles = [];
+        render();
+      });
+
+      document.getElementById('btn-check').addEventListener('click', handleCheck);
+
+      document.getElementById('btn-mute').addEventListener('click', (e) => {
+        const m = SFX.toggleMute();
+        e.currentTarget.textContent = m ? '🔇' : '🔊';
+      });
+
+      document.getElementById('btn-copy').addEventListener('click', () => {
+        const summary = [
+          `ORBITAL RUSH | ${state.player} (${state.section})`,
+          `${document.getElementById('rcp-rank-label').textContent} | SCORE: ${state.score} | ACC: ${document.getElementById('rcp-acc').textContent} | TIME: ${document.getElementById('rcp-time').textContent}`,
+          `LEVELS: ${LEVELS.map((l, i) => `${l.symbol}:${state.results[i]?.passed ? '✓' : '✗'}`).join(' ')}`,
+          `CODE: ${document.getElementById('rcp-code').textContent}`
+        ].join('\n');
+
+        const ta = document.createElement('textarea');
+        ta.value = summary;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+
+        SFX.pop();
+        const toast = document.getElementById('copy-toast');
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 2500);
+      });
+
+      document.getElementById('btn-pdf').addEventListener('click', () => window.print());
+
+      document.getElementById('btn-replay').addEventListener('click', () => {
+        SFX.clear(1);
+        state.score = 0;
+        state.streak = 1;
+        state.hearts = 3;
+        state.checks = 0;
+        state.hits = 0;
+        state.results = [];
+        state.startTime = Date.now();
+        document.getElementById('btn-submit-cloud').textContent = 'SUBMIT';
+        document.getElementById('btn-submit-cloud').disabled = false;
+
+        document.getElementById('screen-receipt').classList.add('hidden');
+        document.getElementById('hud-bar').classList.remove('hidden');
+        document.getElementById('screen-game').classList.remove('hidden');
+        loadLevel(0);
+      });
+    });
+  </script>
+</body>
+</html>
